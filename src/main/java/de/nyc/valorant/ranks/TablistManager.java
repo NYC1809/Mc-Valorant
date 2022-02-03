@@ -1,4 +1,4 @@
-package de.nyc.valorant.Ranks;
+package de.nyc.valorant.ranks;
 
 import org.bukkit.ChatColor;
 import org.bukkit.entity.Player;
@@ -8,10 +8,8 @@ import org.bukkit.scoreboard.Team;
 
 public class TablistManager {
 
-    private static Scoreboard scoreboard;
-
     public void setPlayerTeams(Player player) {
-        scoreboard = player.getScoreboard();
+        Scoreboard scoreboard = player.getScoreboard();
 
         Team team_1 = scoreboard.getTeam("team_1");
         if (team_1 == null) {
@@ -45,8 +43,5 @@ public class TablistManager {
         spectator.setAllowFriendlyFire(false);
         spectator.setOption(Team.Option.NAME_TAG_VISIBILITY, Team.OptionStatus.FOR_OWN_TEAM);
         spectator.setOption(Team.Option.COLLISION_RULE, Team.OptionStatus.NEVER);
-
-
-
     }
 }

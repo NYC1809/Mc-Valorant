@@ -1,14 +1,15 @@
-package de.nyc.valorant.Gamestates;
+package de.nyc.valorant.gamestates;
 
-import de.nyc.valorant.Utils.Main;
+import de.nyc.valorant.MCValorant;
+import de.nyc.valorant.models.GameState;
 
 public class GameStateManager {
 
-    private Main plugin;
+    private final MCValorant plugin;
     private final GameState[] gameStates;
     private GameState currentGameState;
 
-    public GameStateManager(Main plugin) {
+    public GameStateManager(MCValorant plugin) {
         this.plugin = plugin;
         gameStates = new GameState[8];
 
@@ -20,16 +21,14 @@ public class GameStateManager {
         gameStates[GameState.OVERTIME_1] = new Overtime_1();
         gameStates[GameState.OVERTIME_2] = new Overtime_2();
         gameStates[GameState.ENDGAME_PHASE] = new EndgamePhase();
-
     }
 
-    public void setGameStates(int gameStateID) {
+    public void setCurrentGameState(int gameStateID) {
         if(currentGameState != null) {
             currentGameState.stop();
         }
         currentGameState = gameStates[gameStateID];
         currentGameState.start();
-
     }
 
     public void stopCurrentGameState() {

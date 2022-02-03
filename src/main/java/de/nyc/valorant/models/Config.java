@@ -1,5 +1,6 @@
-package de.nyc.valorant.Utils;
+package de.nyc.valorant.models;
 
+import de.nyc.valorant.MCValorant;
 import org.bukkit.configuration.file.YamlConfiguration;
 
 import java.io.File;
@@ -7,34 +8,32 @@ import java.io.IOException;
 
 public class Config {
 
-    private static File file;
-    private static YamlConfiguration config;
+    private final File file;
+    private final YamlConfiguration config;
 
-    public Config() {
-        File dir = new File("./plugins/Valorant/");
-        if (!dir.exists()) {
-            dir.mkdirs();
-
+    public Config(MCValorant main, String name) {
+        if (!main.getDataFolder().exists()) {
+            //noinspection ResultOfMethodCallIgnored
+            main.getDataFolder().mkdirs();
         }
 
-        file = new File(dir, "config.yml");
+        file = new File(main.getDataFolder(), name);
         if (!file.exists()){
             try {
+                //noinspection ResultOfMethodCallIgnored
                 file.createNewFile();
             } catch (IOException e) {
                 e.printStackTrace();
             }
         }
-
         config = YamlConfiguration.loadConfiguration(file);
-
     }
 
-    public static YamlConfiguration getConfig() {
+    public YamlConfiguration getConfig() {
         return config;
     }
 
-    public static void saveConfig(){
+    public void saveConfig(){
         try {
             config.save(file);
         } catch (IOException e) {

@@ -1,6 +1,8 @@
-package de.nyc.valorant.Gamestates;
+package de.nyc.valorant.gamestates;
 
-public class LobbyPhase extends GameState{
+import de.nyc.valorant.models.GameState;
+
+public class LobbyPhase extends GameState {
     @Override
     public void start() {
         System.out.println("[Valorant] LobbyPhase set!");

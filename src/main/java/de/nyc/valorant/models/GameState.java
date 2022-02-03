@@ -1,4 +1,6 @@
-package de.nyc.valorant.Gamestates;
+package de.nyc.valorant.models;
+
+import org.bukkit.scheduler.BukkitRunnable;
 
 public abstract class GameState {
 

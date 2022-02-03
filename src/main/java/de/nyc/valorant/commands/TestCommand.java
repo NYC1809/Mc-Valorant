@@ -1,4 +1,4 @@
-package de.nyc.valorant.Commands;
+package de.nyc.valorant.commands;
 
 import org.bukkit.ChatColor;
 import org.bukkit.Location;
@@ -14,7 +14,7 @@ import org.bukkit.potion.PotionEffectType;
 
 import java.util.Objects;
 
-public class TestCmd implements CommandExecutor {
+public class TestCommand implements CommandExecutor {
     @Override
     public boolean onCommand(CommandSender sender, Command command, String label, String[] args) {
 

@@ -1,6 +1,6 @@
 name: Valorant
 version: '${project.version}'
-main: de.nyc.valorant.Utils.Main
+main: de.nyc.valorant.Main
 api-version: 1.16
 authors: [ NYC_1809 ]
 description: Creating a Valorant Gamemode in Minecraft
