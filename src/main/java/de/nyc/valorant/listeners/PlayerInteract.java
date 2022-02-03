@@ -22,18 +22,22 @@ public class PlayerInteract implements Listener {
     @EventHandler
     public void onInteract(PlayerInteractEvent event) {
         Player player = event.getPlayer();
+        main.getLogger().info("Event works");
         if (player.getItemOnCursor().getType() != Material.WOODEN_AXE) {
             return;
         }
 
         if (event.getAction() == Action.RIGHT_CLICK_AIR || event.getAction() == Action.RIGHT_CLICK_BLOCK) {
+            main.getLogger().info("Is rightclick");
             Location loc = player.getLocation();
             if (loc.getWorld() == null) {
                 return;
             }
 
+            main.getLogger().info("Location found");
             Vector direction = loc.getDirection().normalize();
             for (int i = 0; i < 50; i++) {
+                main.getLogger().info("Particle spawned " + i);
                 loc.getWorld().spawnParticle(Particle.COMPOSTER, loc.add(direction), 1);
             }
         }
