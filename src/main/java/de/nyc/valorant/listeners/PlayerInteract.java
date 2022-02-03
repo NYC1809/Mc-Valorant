@@ -29,7 +29,7 @@ public class PlayerInteract implements Listener {
 
         if (event.getAction() == Action.RIGHT_CLICK_AIR || event.getAction() == Action.RIGHT_CLICK_BLOCK) {
             main.getLogger().info("Is rightclick");
-            Location loc = player.getLocation();
+            Location loc = player.getEyeLocation();
             if (loc.getWorld() == null) {
                 return;
             }
