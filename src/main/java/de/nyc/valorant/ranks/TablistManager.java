@@ -6,8 +6,6 @@ import org.bukkit.entity.Player;
 import org.bukkit.scoreboard.Scoreboard;
 import org.bukkit.scoreboard.Team;
 
-import java.util.Objects;
-
 public class TablistManager {
 
     private Scoreboard scoreboard;
@@ -45,16 +43,13 @@ public class TablistManager {
         return scoreboardTeam.getEntries().size();
     }
 
-    public void addTeam_1(Player player) {
-        Objects.requireNonNull(scoreboard.getTeam("team_1")).addEntry(player.toString());
-    }
-
-    public void addTeam_2(Player player) {
-        Objects.requireNonNull(scoreboard.getTeam("team_2")).addEntry(player.toString());
-    }
-
-    public void addSpectator(Player player) {
-        Objects.requireNonNull(scoreboard.getTeam("spectator")).addEntry(player.toString());
+    public boolean addToTeam(GameTeam team, Player player) {
+        Team scoreboardTeam = scoreboard.getTeam(team.name());
+        if (scoreboardTeam == null) {
+            return false;
+        }
+        scoreboardTeam.addEntry(player.toString());
+        return true;
     }
 
 }
