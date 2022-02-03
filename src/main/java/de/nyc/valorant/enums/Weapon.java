@@ -6,7 +6,7 @@ import org.bukkit.Material;
 public enum Weapon {
 
     VANDAL(Material.DIAMOND_AXE, new BulletInfo(150, .8f, .6f, .8f, 150, false)),
-    SPECTRE(Material.GOLDEN_AXE, new BulletInfo(70, .8f, .6f, .2f, 150, true)),
+    SPECTRE(Material.GOLDEN_AXE, new BulletInfo(70, .8f, .6f, .2f, 150, false)),
     ;
 
     private final Material material;

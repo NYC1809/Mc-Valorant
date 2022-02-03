@@ -49,21 +49,26 @@ public class PlayerInteract implements Listener {
             float damage = bi.baseDamage;
             Vector direction = loc.getDirection().normalize();
             for (int i = 0; i < weapon.getBulletInfo().range; i++) {
-                loc.add(direction);
                 Block pos = loc.getBlock();
                 if (main.blockInfoMap.containsKey(pos.getType())) {
                     BlockInfo info = main.blockInfoMap.get(pos.getType());
                     // bullet can only penetrate once
-                    if (info.thickness > 0 && hasPenetrated) {
-                        break;
-                    }
-                    if (bi.penetrationRate > info.thickness) {
-                        damage = damage * (bi.penetrationRate - info.thickness);
-                        hasPenetrated = true;
+                    if (info.thickness > 0) {
+                        if (hasPenetrated) {
+                            break;
+                        }
+                        if (bi.penetrationRate > info.thickness) {
+                            damage = damage * (bi.penetrationRate - info.thickness);
+                            hasPenetrated = true;
+                        } else {
+                            break;
+                        }
                     }
                     if (!bi.silenced) {
                         loc.getWorld().spawnParticle(Particle.COMPOSTER, loc.add(direction), 1);
                     }
+                } else {
+                    break;
                 }
             }
 
