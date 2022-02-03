@@ -1,5 +1,6 @@
 package de.nyc.valorant.enums;
 
+
 import com.sun.tools.javac.util.Pair;
 import org.bukkit.ChatColor;
 import org.bukkit.scoreboard.Team;

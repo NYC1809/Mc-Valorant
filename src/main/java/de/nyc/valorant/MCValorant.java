@@ -44,6 +44,8 @@ public final class MCValorant extends JavaPlugin {
         blockInfoMap.put(Material.AIR, new BlockInfo(0));
     }
 
+
+
     public Config getConfiguration() {
         return configuration;
     }
