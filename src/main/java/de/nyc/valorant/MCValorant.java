@@ -18,6 +18,10 @@ public final class MCValorant extends JavaPlugin {
     private Config configuration;
     private GameStateManager gameStateManager;
 
+    public MCValorant() {
+
+    }
+
     @Override
     public void onEnable() {
         configuration = new Config(this, "config.yml");
