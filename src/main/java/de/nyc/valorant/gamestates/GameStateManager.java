@@ -13,7 +13,7 @@ public class GameStateManager {
         this.plugin = plugin;
         gameStates = new GameState[8];
 
-        gameStates[GameState.LOBBY_PHASE] = new LobbyPhase();
+        gameStates[GameState.LOBBY_PHASE] = new LobbyPhase(plugin);
         gameStates[GameState.AGENT_SELECT] = new AgentSelect();
         gameStates[GameState.BUY_PHASE] = new BuyPhase();
         gameStates[GameState.INGAME_PHASE] = new IngamePhase();

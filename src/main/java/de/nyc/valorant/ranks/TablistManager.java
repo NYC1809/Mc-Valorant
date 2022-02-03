@@ -5,11 +5,15 @@ import org.bukkit.entity.Player;
 import org.bukkit.scoreboard.Scoreboard;
 import org.bukkit.scoreboard.Team;
 
+import java.util.Objects;
+
 
 public class TablistManager {
 
+    private Scoreboard scoreboard;
+
     public void setPlayerTeams(Player player) {
-        Scoreboard scoreboard = player.getScoreboard();
+        scoreboard = player.getScoreboard();
 
         Team team_1 = scoreboard.getTeam("team_1");
         if (team_1 == null) {
@@ -44,4 +48,31 @@ public class TablistManager {
         spectator.setOption(Team.Option.NAME_TAG_VISIBILITY, Team.OptionStatus.FOR_OWN_TEAM);
         spectator.setOption(Team.Option.COLLISION_RULE, Team.OptionStatus.NEVER);
     }
+
+    public Scoreboard getScoreboard() {
+        return scoreboard;
+    }
+
+    public int getEntriesTeam_1Size() {
+        return scoreboard.getTeam("team_1").getSize();
+    }
+
+    public int getEntriesTeam_2Size() {
+        return scoreboard.getTeam("team_2").getSize();
+    }
+
+    public void addTeam_1(Player player) {
+        Objects.requireNonNull(scoreboard.getTeam("team_1")).addEntry(player.toString());
+    }
+
+    public void addTeam_2(Player player) {
+        Objects.requireNonNull(scoreboard.getTeam("team_2")).addEntry(player.toString());
+    }
+
+    public void addSpectator(Player player) {
+        Objects.requireNonNull(scoreboard.getTeam("spectator")).addEntry(player.toString());
+    }
+
 }
+
+

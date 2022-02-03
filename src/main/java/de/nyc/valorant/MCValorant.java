@@ -18,17 +18,13 @@ public final class MCValorant extends JavaPlugin {
     private Config configuration;
     private GameStateManager gameStateManager;
 
-    public MCValorant() {
-
-    }
-
     @Override
     public void onEnable() {
         configuration = new Config(this, "config.yml");
         new TablistManager();
 
         PluginManager pm = Bukkit.getPluginManager();
-        pm.registerEvents(new PlayerJoin(), this);
+        pm.registerEvents(new PlayerJoin(this), this);
         pm.registerEvents(new PlayerInteract(this), this);
 
         registerCommand("slime", new TestCommand());
