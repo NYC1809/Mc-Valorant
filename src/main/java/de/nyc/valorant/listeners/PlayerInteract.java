@@ -23,7 +23,7 @@ public class PlayerInteract implements Listener {
     public void onInteract(PlayerInteractEvent event) {
         Player player = event.getPlayer();
         main.getLogger().info("Event works");
-        if (player.getItemOnCursor().getType() != Material.WOODEN_AXE) {
+        if (player.getInventory().getItemInMainHand().getType() != Material.WOODEN_AXE) {
             return;
         }
 
