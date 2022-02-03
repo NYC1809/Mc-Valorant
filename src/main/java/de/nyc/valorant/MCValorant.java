@@ -17,11 +17,12 @@ public final class MCValorant extends JavaPlugin {
 
     private Config configuration;
     private GameStateManager gameStateManager;
+    private TablistManager tablistManager;
 
     @Override
     public void onEnable() {
         configuration = new Config(this, "config.yml");
-        new TablistManager();
+        tablistManager = new TablistManager();
 
         PluginManager pm = Bukkit.getPluginManager();
         pm.registerEvents(new PlayerJoin(this), this);
@@ -39,6 +40,10 @@ public final class MCValorant extends JavaPlugin {
 
     public GameStateManager getGameStateManager() {
         return gameStateManager;
+    }
+
+    public TablistManager getTablistManager() {
+        return tablistManager;
     }
 
     private void registerCommand(String command, CommandExecutor executor) {

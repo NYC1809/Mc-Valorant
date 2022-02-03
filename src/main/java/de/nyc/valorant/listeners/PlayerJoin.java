@@ -1,6 +1,7 @@
 package de.nyc.valorant.listeners;
 
 import de.nyc.valorant.MCValorant;
+import de.nyc.valorant.enums.GameTeam;
 import de.nyc.valorant.ranks.TablistManager;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
@@ -20,23 +21,25 @@ public class PlayerJoin implements Listener {
 
     @EventHandler
     public void onJoin(PlayerJoinEvent event) {
-        if(new TablistManager().getEntriesTeam_1Size() >= 5 && new TablistManager().getEntriesTeam_2Size() >= 5) {
-
+        TablistManager tm = main.getTablistManager();
+        if (tm.getTeamSize(GameTeam.TEAM1) >= 5 && tm.getTeamSize(GameTeam.TEAM2) >= 5) {
+            // TODO
         }
-
     }
 
     @EventHandler
     public void onLogin(PlayerLoginEvent event) {
         Player player = event.getPlayer();
-        if(player.isOp()) {
+        if (player.isOp()) {
             event.setResult(PlayerLoginEvent.Result.ALLOWED);
+            return;
         }
 
-        if(Bukkit.getOnlinePlayers().size() >= Bukkit.getMaxPlayers()) {
+        if (Bukkit.getOnlinePlayers().size() >= Bukkit.getMaxPlayers()) {
+            event.setResult(PlayerLoginEvent.Result.KICK_FULL);
             event.setKickMessage(ChatColor.GOLD.toString() + ChatColor.BOLD + "Valorant in Minecraft" +
                     "\n " + ChatColor.YELLOW + "The Server is full!" +
-                    "\n " + ChatColor.YELLOW  + " Please try again later.");
+                    "\n " + ChatColor.YELLOW  + "Please try again later.");
         }
 
     }
