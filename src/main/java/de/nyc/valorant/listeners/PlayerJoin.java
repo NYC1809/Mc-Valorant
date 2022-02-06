@@ -13,6 +13,8 @@ import org.bukkit.event.Listener;
 import org.bukkit.event.player.PlayerJoinEvent;
 import org.bukkit.event.player.PlayerLoginEvent;
 
+import java.util.Random;
+
 public class PlayerJoin implements Listener {
 
     private final MCValorant main;
@@ -24,12 +26,47 @@ public class PlayerJoin implements Listener {
 
     @EventHandler
     public void onJoin(PlayerJoinEvent event) {
-        TablistManager tm = main.getTablistManager();
-        if (tm.getTeamSize(GameTeam.TEAM1) >= 5 && tm.getTeamSize(GameTeam.TEAM2) >= 5) {
+        Player player = event.getPlayer();
 
-        }
+        TablistManager tm = main.getTablistManager();
 
         gameStateManager = main.getGameStateManager();
+        if (gameStateManager.getCurrentGameStateNameActive().equals("LobbyPhase")) {
+            if (tm.getTeamSize(GameTeam.TEAM1) >= 5 && tm.getTeamSize(GameTeam.TEAM2) >= 5) {
+                tm.addToTeam(GameTeam.SPECTATOR, player);
+            } else {
+                Random random = new Random();
+                switch (random.nextInt(2)+1) {
+                    case 1:
+                        if(tm.getTeamSize(GameTeam.TEAM1) >= 5) {
+                            tm.addToTeam(GameTeam.TEAM2, player);
+                        } else {
+                            tm.addToTeam(GameTeam.TEAM1, player);
+                        }
+                        break;
+                    case 2:
+                        if(tm.getTeamSize(GameTeam.TEAM2) >= 5) {
+                            tm.addToTeam(GameTeam.TEAM1, player);
+                        } else {
+                            tm.addToTeam(GameTeam.TEAM2, player);
+                        }
+                        break;
+                    default:
+                        tm.addToTeam(GameTeam.SPECTATOR, player);
+                        break;
+                }
+            }
+        } else {
+            tm.addToTeam(GameTeam.SPECTATOR, player);
+        }
+
+
+
+        player.sendMessage("Team_1: " + tm.getTeamSize(GameTeam.TEAM1));
+        player.sendMessage("Team_2: " + tm.getTeamSize(GameTeam.TEAM2));
+
+
+
     }
 
     @EventHandler
