@@ -1,60 +1,85 @@
 package de.nyc.valorant.manager;
 
-import de.nyc.valorant.MCValorant;
-import de.nyc.valorant.gamestates.*;
-import de.nyc.valorant.models.GameState;
+import de.nyc.valorant.enums.GameState;
+import de.nyc.valorant.models.GameStateHandler;
+import org.jetbrains.annotations.Nullable;
 
+import java.util.HashMap;
+
+/**
+ * Manager which allows registering handlers for each game state.
+ */
 public class GameStateManager {
 
-    private final MCValorant plugin;
-    private final GameState[] gameStates;
-    private GameState currentGameState;
+    private final HashMap<GameState, GameStateHandler> handlers = new HashMap<>();
+    private GameState gameState;
 
-    public GameStateManager(MCValorant plugin) {
-        this.plugin = plugin;
-        gameStates = new GameState[8];
-
-        gameStates[GameState.LOBBY_PHASE] = new LobbyPhase(plugin);
-        gameStates[GameState.AGENT_SELECT] = new AgentSelect(plugin);
-        gameStates[GameState.BUY_PHASE] = new BuyPhase(plugin);
-        gameStates[GameState.INGAME_PHASE] = new IngamePhase(plugin);
-        gameStates[GameState.ROUND_OVER] = new RoundOverPhase(plugin);
-        gameStates[GameState.OVERTIME_1] = new Overtime1(plugin);
-        gameStates[GameState.OVERTIME_2] = new Overtime2(plugin);
-        gameStates[GameState.ENDGAME_PHASE] = new EndgamePhase(plugin);
+    /**
+     * Registers a new handler instance for the given game state.
+     * @param gameState The game state
+     * @param handler The handler instance
+     */
+    public void registerHandler(GameState gameState, GameStateHandler handler) {
+        handlers.put(gameState, handler);
     }
 
-    public void setCurrentGameState(int gameStateID) {
-        if(currentGameState != null) {
-            currentGameState.stop();
+    /**
+     * Gets a map of all registered handlers.
+     * @return The map of handlers
+     */
+    public HashMap<GameState, GameStateHandler> getHandlers() {
+        return handlers;
+    }
+
+    /**
+     * Gets the handler of the current game state.
+     * @return Null if no game state is active, null if handler is not registered, the handler otherwise
+     */
+    @Nullable
+    public GameStateHandler getCurrentHandler() {
+        if (gameState == null) {
+            return null;
         }
-        currentGameState = gameStates[gameStateID];
-        currentGameState.start();
+        return handlers.getOrDefault(gameState, null);
     }
 
-    public void stopCurrentGameState() {
-        if (currentGameState != null) {
-            currentGameState.stop();
-            currentGameState = null;
-
+    /**
+     * Sets the current game state and triggers its handler.
+     * @param gameState The game state to set
+     * @return false if no handler is registered for the given game state, true if the handler has been triggered
+     */
+    public boolean setGameState(GameState gameState) {
+        if (!handlers.containsKey(gameState)) {
+            return false;
         }
-
+        if (this.gameState != null) {
+            handlers.get(this.gameState).stop();
+        }
+        handlers.get(gameState).start();
+        this.gameState = gameState;
+        return true;
     }
 
-    public GameState getCurrentGameState() {
-        return currentGameState;
+    /**
+     * Stops the current game state.
+     * @return false if there is no current game state, true if the handler has been stopped
+     */
+    public boolean stopCurrentGameState() {
+        if (gameState == null) {
+            return false;
+        }
+        handlers.get(gameState).stop();
+        gameState = null;
+        return true;
     }
 
-    public String getCurrentGameStateNameActive() {
-        String[] list;
-        list =  currentGameState.toString().split("\\.");
-
-        String[] list_2;
-        list_2 = list[4].split("@");
-
-        return list_2[0];
+    /**
+     * Gets the current game state
+     * @return null if there is no current game state, the game state otherwise
+     */
+    @Nullable
+    public GameState getGameState() {
+        return gameState;
     }
-
-
 
 }

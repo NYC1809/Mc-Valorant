@@ -8,12 +8,12 @@ import org.bukkit.scoreboard.Scoreboard;
 import org.bukkit.scoreboard.ScoreboardManager;
 import org.bukkit.scoreboard.Team;
 
-public class TablistManager {
+public class TabListManager {
 
     private final MCValorant main;
-    private Scoreboard scoreboard;
+    private final Scoreboard scoreboard;
 
-    public TablistManager(MCValorant main) {
+    public TabListManager(MCValorant main) {
         this.main = main;
         ScoreboardManager sm = main.getServer().getScoreboardManager();
         if (sm == null) {

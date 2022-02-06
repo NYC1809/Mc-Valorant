@@ -1,9 +1,10 @@
 package de.nyc.valorant.listeners;
 
 import de.nyc.valorant.MCValorant;
+import de.nyc.valorant.enums.GameState;
 import de.nyc.valorant.enums.GameTeam;
 import de.nyc.valorant.manager.GameStateManager;
-import de.nyc.valorant.manager.TablistManager;
+import de.nyc.valorant.manager.TabListManager;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.entity.Player;
@@ -27,23 +28,23 @@ public class PlayerJoin implements Listener {
     public void onJoin(PlayerJoinEvent event) {
         Player player = event.getPlayer();
 
-        TablistManager tm = main.getTablistManager();
+        TabListManager tm = main.getTabListManager();
         gameStateManager = main.getGameStateManager();
 
-        if (gameStateManager.getCurrentGameStateNameActive().equals("LobbyPhase")) {
+        if (gameStateManager.getGameState() == GameState.LOBBY_PHASE) {
             if (tm.getTeamSize(GameTeam.TEAM1) >= 5 && tm.getTeamSize(GameTeam.TEAM2) >= 5) {
                 tm.addToTeam(GameTeam.SPECTATOR, player);
             } else {
                 Random random = new Random();
-                switch (random.nextInt(2)+1) {
-                    case 1:
+                switch (random.nextInt(2)) {
+                    case 0:
                         if(tm.getTeamSize(GameTeam.TEAM1) >= 5) {
                             tm.addToTeam(GameTeam.TEAM2, player);
                         } else {
                             tm.addToTeam(GameTeam.TEAM1, player);
                         }
                         break;
-                    case 2:
+                    case 1:
                         if(tm.getTeamSize(GameTeam.TEAM2) >= 5) {
                             tm.addToTeam(GameTeam.TEAM1, player);
                         } else {
@@ -59,11 +60,8 @@ public class PlayerJoin implements Listener {
             tm.addToTeam(GameTeam.SPECTATOR, player);
         }
 
-        player.sendMessage("Team_1: " + tm.getTeamSize(GameTeam.TEAM1));
-        player.sendMessage("Team_2: " + tm.getTeamSize(GameTeam.TEAM2));
-
-
-
+        player.sendMessage("Players in team 1: " + tm.getTeamSize(GameTeam.TEAM1));
+        player.sendMessage("Players in team 2: " + tm.getTeamSize(GameTeam.TEAM2));
     }
 
     @EventHandler
