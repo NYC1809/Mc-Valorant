@@ -49,6 +49,7 @@ public class PlayerInteract implements Listener {
 
         if (event.getAction() == Action.RIGHT_CLICK_AIR || event.getAction() == Action.RIGHT_CLICK_BLOCK) {
             if (main.lastShot.containsKey(player)) {
+                main.getLogger().info("Cooldown test");
                 KeyValuePair<Weapon, LocalDateTime> lastShot = main.lastShot.get(player);
                 if (lastShot.getKey() == weapon) {
                     Duration wait = Duration.ofMillis(Math.round(1000 / weapon.getShotsPerSec()));

@@ -10,6 +10,7 @@ import de.nyc.valorant.models.KeyValuePair;
 import de.nyc.valorant.ranks.TablistManager;
 import de.nyc.valorant.models.Config;
 import de.nyc.valorant.listeners.PlayerInteract;
+import de.nyc.valorant.utils.FileUtils;
 import org.bukkit.Bukkit;
 import org.bukkit.Material;
 import org.bukkit.command.CommandExecutor;
@@ -50,6 +51,7 @@ public final class MCValorant extends JavaPlugin {
 
         System.out.println("[Valorant-Debug] Active Gamestate: " + gameStateManager.getCurrentGameStateNameActive());
 
+        FileUtils.copyResource(this, "en.yml");
     }
 
 
