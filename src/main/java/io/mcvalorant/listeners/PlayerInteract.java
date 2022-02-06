@@ -58,11 +58,11 @@ public class PlayerInteract implements Listener {
             }
 
             if (ig.getWeapons().get(weapon).getAmmo() == 0) {
-                loc.getWorld().playSound(loc, Sound.BLOCK_DISPENSER_FAIL, 1.0f, 1.5f);
+                player.playSound(loc, Sound.BLOCK_DISPENSER_FAIL, 1.0f, 1.5f);
                 return;
             }
 
-            player.playSound(loc, weapon.getSound(), 1.0f, weapon.getPitch());
+            loc.getWorld().playSound(loc, weapon.getSound(), 1.0f, weapon.getPitch());
 
             BulletInfo bi = weapon.getBulletInfo();
             boolean hasPenetrated = false;

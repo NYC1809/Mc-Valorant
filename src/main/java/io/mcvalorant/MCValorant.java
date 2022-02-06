@@ -126,7 +126,7 @@ public final class MCValorant extends JavaPlugin {
                 actionBar = actionBar + " §f| " + wi.getSpareAmmo();
                 p.sendActionBar(Component.text(actionBar));
             }
-        }, 0, 5);
+        }, 0, 1);
     }
 
     private void registerCommand(String command, CommandExecutor executor) {
