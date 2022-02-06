@@ -4,6 +4,7 @@ import io.mcvalorant.MCValorant;
 import io.mcvalorant.enums.GameTeam;
 import io.mcvalorant.utils.KeyValuePair;
 import net.kyori.adventure.text.Component;
+import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 import org.bukkit.scoreboard.Scoreboard;
 import org.bukkit.scoreboard.ScoreboardManager;
@@ -57,6 +58,25 @@ public class TabListManager {
         scoreboardTeam.addEntry(player.toString());
         return true;
     }
+
+    public boolean removeFromTeam(GameTeam team, Player player) {
+        Team scoreboardTeam = scoreboard.getTeam(team.name());
+        if (scoreboardTeam == null) {
+            return false;
+        }
+        scoreboardTeam.removeEntry(player.toString());
+        return true;
+    }
+
+    public boolean clearTeam(GameTeam team) {
+        Team scoreboardTeam = scoreboard.getTeam(team.name());
+        if (scoreboardTeam == null) {
+            return false;
+        }
+        scoreboardTeam.getEntries().clear();
+        return true;
+    }
+
 
 }
 

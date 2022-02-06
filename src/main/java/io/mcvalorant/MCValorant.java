@@ -2,6 +2,7 @@ package io.mcvalorant;
 
 import io.mcvalorant.commands.SlimeCommand;
 import io.mcvalorant.enums.GameState;
+import io.mcvalorant.enums.GameTeam;
 import io.mcvalorant.enums.Weapon;
 import io.mcvalorant.gamestates.*;
 import io.mcvalorant.listeners.PlayerChangeSlots;
@@ -66,6 +67,10 @@ public final class MCValorant extends JavaPlugin {
         gameStateManager.registerHandler(GameState.ENDGAME_PHASE, new EndgamePhase(this));
 
         tabListManager = new TabListManager(this);
+        tabListManager.clearTeam(GameTeam.TEAM1);
+        tabListManager.clearTeam(GameTeam.TEAM2);
+        tabListManager.clearTeam(GameTeam.SPECTATOR);
+        getLogger().info("Cleared all Teams");
 
         PluginManager pm = Bukkit.getPluginManager();
         pm.registerEvents(new PlayerJoin(this), this);
