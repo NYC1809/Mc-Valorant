@@ -3,6 +3,10 @@ package de.nyc.valorant.gamestates;
 import de.nyc.valorant.MCValorant;
 import de.nyc.valorant.models.GameState;
 
+import java.lang.reflect.Array;
+import java.util.ArrayList;
+import java.util.Arrays;
+
 public class GameStateManager {
 
     private final MCValorant plugin;
@@ -42,6 +46,16 @@ public class GameStateManager {
 
     public GameState getCurrentGameState() {
         return currentGameState;
+    }
+
+    public String getCurrentGameStateNameActive() {
+        String[] list;
+        list =  currentGameState.toString().split("\\.");
+
+        String[] list_2;
+        list_2 = list[4].split("@");
+
+        return list_2[0];
     }
 
 

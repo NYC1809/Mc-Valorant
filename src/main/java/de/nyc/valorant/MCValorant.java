@@ -42,8 +42,10 @@ public final class MCValorant extends JavaPlugin {
         blockInfoMap.put(Material.STONE, new BlockInfo(1f));
         blockInfoMap.put(Material.OAK_WOOD, new BlockInfo(.5f));
         blockInfoMap.put(Material.AIR, new BlockInfo(0));
-    }
 
+        System.out.println("[Valorant-Debug] Active Gamestate: " + gameStateManager.getCurrentGameStateNameActive());
+
+    }
 
 
     public Config getConfiguration() {
