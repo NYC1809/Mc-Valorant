@@ -1,10 +1,10 @@
-name: Valorant
+name: '${project.name}'
 version: '${project.version}'
-main: de.nyc.valorant.MCValorant
-api-version: 1.16
-authors: [ NYC_1809 ]
-description: Creating a Valorant Gamemode in Minecraft
+description: '${project.description}'
+main: io.mcvalorant.MCValorant
+api-version: 1.18
+authors: [ NYC_1809, Hakuyamu ]
 
 commands:
   slime:
-    description: Creates a slime / Test to find Head Hitboxes
+    description: Creates an entity to find head hitboxes
