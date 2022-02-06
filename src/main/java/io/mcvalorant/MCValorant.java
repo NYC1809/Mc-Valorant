@@ -79,12 +79,8 @@ public final class MCValorant extends JavaPlugin {
 
         registerCommand("slime", new SlimeCommand());
 
-        gameStateManager.setGameState(GameState.LOBBY_PHASE);
-        GameState active = gameStateManager.getGameState();
-        if (active == null) {
-            getLogger().warning("[Debug] Active Gamestate: none");
-        } else {
-            getLogger().info("[Debug] Active Gamestate: " + active.getFriendlyName());
+        if (!gameStateManager.setGameState(GameState.LOBBY_PHASE)) {
+            getLogger().severe("Lobby phase failed to start.");
         }
 
         getLogger().info("§2MC-Valorant loaded in " + Duration.between(start, LocalDateTime.now()).toMillis() + "ms");
