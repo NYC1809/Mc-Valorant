@@ -18,13 +18,13 @@ public class GameStateManager {
         gameStates = new GameState[8];
 
         gameStates[GameState.LOBBY_PHASE] = new LobbyPhase(plugin);
-        gameStates[GameState.AGENT_SELECT] = new AgentSelect();
-        gameStates[GameState.BUY_PHASE] = new BuyPhase();
-        gameStates[GameState.INGAME_PHASE] = new IngamePhase();
-        gameStates[GameState.ROUND_OVER] = new RoundOverPhase();
-        gameStates[GameState.OVERTIME_1] = new Overtime_1();
-        gameStates[GameState.OVERTIME_2] = new Overtime_2();
-        gameStates[GameState.ENDGAME_PHASE] = new EndgamePhase();
+        gameStates[GameState.AGENT_SELECT] = new AgentSelect(plugin);
+        gameStates[GameState.BUY_PHASE] = new BuyPhase(plugin);
+        gameStates[GameState.INGAME_PHASE] = new IngamePhase(plugin);
+        gameStates[GameState.ROUND_OVER] = new RoundOverPhase(plugin);
+        gameStates[GameState.OVERTIME_1] = new Overtime_1(plugin);
+        gameStates[GameState.OVERTIME_2] = new Overtime_2(plugin);
+        gameStates[GameState.ENDGAME_PHASE] = new EndgamePhase(plugin);
     }
 
     public void setCurrentGameState(int gameStateID) {

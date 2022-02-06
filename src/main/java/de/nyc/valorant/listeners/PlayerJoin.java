@@ -3,7 +3,6 @@ package de.nyc.valorant.listeners;
 import de.nyc.valorant.MCValorant;
 import de.nyc.valorant.enums.GameTeam;
 import de.nyc.valorant.gamestates.GameStateManager;
-import de.nyc.valorant.models.GameState;
 import de.nyc.valorant.ranks.TablistManager;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
@@ -29,8 +28,8 @@ public class PlayerJoin implements Listener {
         Player player = event.getPlayer();
 
         TablistManager tm = main.getTablistManager();
-
         gameStateManager = main.getGameStateManager();
+
         if (gameStateManager.getCurrentGameStateNameActive().equals("LobbyPhase")) {
             if (tm.getTeamSize(GameTeam.TEAM1) >= 5 && tm.getTeamSize(GameTeam.TEAM2) >= 5) {
                 tm.addToTeam(GameTeam.SPECTATOR, player);
@@ -59,8 +58,6 @@ public class PlayerJoin implements Listener {
         } else {
             tm.addToTeam(GameTeam.SPECTATOR, player);
         }
-
-
 
         player.sendMessage("Team_1: " + tm.getTeamSize(GameTeam.TEAM1));
         player.sendMessage("Team_2: " + tm.getTeamSize(GameTeam.TEAM2));

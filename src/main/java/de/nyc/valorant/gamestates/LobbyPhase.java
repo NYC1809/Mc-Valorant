@@ -21,7 +21,7 @@ public class LobbyPhase extends GameState {
 
     @Override
     public void stop() {
-        main.getConfiguration().getConfig().set("LobbyPhase.started", true);
+        main.getConfiguration().getConfig().set("LobbyPhase.started", false);
         main.getConfiguration().getConfig().saveToString();
     }
 
