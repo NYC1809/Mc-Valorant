@@ -37,11 +37,16 @@ public class TablistManager {
     }
 
     public int getTeamSize(GameTeam team) {
-        Team scoreboardTeam = scoreboard.getTeam(team.name());
-        if (scoreboardTeam == null) {
+        try {
+            Team scoreboardTeam = scoreboard.getTeam(team.name());
+            if (scoreboardTeam == null) {
+                return 0;
+            }
+            return scoreboardTeam.getEntries().size();
+        } catch (NullPointerException e) {
+            e.printStackTrace();
             return 0;
         }
-        return scoreboardTeam.getEntries().size();
     }
 
     public boolean addToTeam(GameTeam team, Player player) {

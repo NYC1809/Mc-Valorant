@@ -82,7 +82,7 @@ public class PlayerInteract implements Listener {
                     if (!bi.silenced) {
                         loc.getWorld().spawnParticle(Particle.COMPOSTER, loc.add(direction), 1);
                     }
-                    loc.getWorld().playSound(loc, Sound.ENTITY_BLAZE_SHOOT, 1.0f, .2f);
+                    loc.getWorld().playSound(loc, Sound.BLOCK_STONE_BREAK, 1.0f, 1.5f);
                 } else {
                     break;
                 }
