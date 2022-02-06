@@ -7,6 +7,7 @@ import de.nyc.valorant.models.BulletInfo;
 import de.nyc.valorant.models.KeyValuePair;
 import org.bukkit.Location;
 import org.bukkit.Particle;
+import org.bukkit.Sound;
 import org.bukkit.block.Block;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
@@ -49,7 +50,6 @@ public class PlayerInteract implements Listener {
 
         if (event.getAction() == Action.RIGHT_CLICK_AIR || event.getAction() == Action.RIGHT_CLICK_BLOCK) {
             if (main.lastShot.containsKey(player)) {
-                main.getLogger().info("Cooldown test");
                 KeyValuePair<Weapon, LocalDateTime> lastShot = main.lastShot.get(player);
                 if (lastShot.getKey() == weapon) {
                     Duration wait = Duration.ofMillis(Math.round(1000 / weapon.getShotsPerSec()));
@@ -82,6 +82,7 @@ public class PlayerInteract implements Listener {
                     if (!bi.silenced) {
                         loc.getWorld().spawnParticle(Particle.COMPOSTER, loc.add(direction), 1);
                     }
+                    loc.getWorld().playSound(loc, Sound.ENTITY_BLAZE_SHOOT, 1.0f, .2f);
                 } else {
                     break;
                 }

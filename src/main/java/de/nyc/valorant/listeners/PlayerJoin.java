@@ -24,17 +24,12 @@ public class PlayerJoin implements Listener {
 
     @EventHandler
     public void onJoin(PlayerJoinEvent event) {
-
-        /*
         TablistManager tm = main.getTablistManager();
         if (tm.getTeamSize(GameTeam.TEAM1) >= 5 && tm.getTeamSize(GameTeam.TEAM2) >= 5) {
+
         }
-         */
 
         gameStateManager = main.getGameStateManager();
-
-
-
     }
 
     @EventHandler
