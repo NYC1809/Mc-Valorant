@@ -1,15 +1,12 @@
 package de.nyc.valorant.gamestates;
 
 import de.nyc.valorant.MCValorant;
-import de.nyc.valorant.models.Config;
 import de.nyc.valorant.models.GameState;
 
 public class LobbyPhase extends GameState {
 
-    private final MCValorant main;
-
     public LobbyPhase(MCValorant main) {
-        this.main = main;
+        super(main);
     }
 
     @Override

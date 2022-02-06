@@ -1,11 +1,8 @@
-package de.nyc.valorant.gamestates;
+package de.nyc.valorant.manager;
 
 import de.nyc.valorant.MCValorant;
+import de.nyc.valorant.gamestates.*;
 import de.nyc.valorant.models.GameState;
-
-import java.lang.reflect.Array;
-import java.util.ArrayList;
-import java.util.Arrays;
 
 public class GameStateManager {
 
@@ -22,8 +19,8 @@ public class GameStateManager {
         gameStates[GameState.BUY_PHASE] = new BuyPhase(plugin);
         gameStates[GameState.INGAME_PHASE] = new IngamePhase(plugin);
         gameStates[GameState.ROUND_OVER] = new RoundOverPhase(plugin);
-        gameStates[GameState.OVERTIME_1] = new Overtime_1(plugin);
-        gameStates[GameState.OVERTIME_2] = new Overtime_2(plugin);
+        gameStates[GameState.OVERTIME_1] = new Overtime1(plugin);
+        gameStates[GameState.OVERTIME_2] = new Overtime2(plugin);
         gameStates[GameState.ENDGAME_PHASE] = new EndgamePhase(plugin);
     }
 

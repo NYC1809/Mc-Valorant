@@ -1,8 +1,8 @@
-package de.nyc.valorant.ranks;
+package de.nyc.valorant.manager;
 
 import de.nyc.valorant.MCValorant;
 import de.nyc.valorant.enums.GameTeam;
-import de.nyc.valorant.models.KeyValuePair;
+import de.nyc.valorant.utils.KeyValuePair;
 import org.bukkit.entity.Player;
 import org.bukkit.scoreboard.Scoreboard;
 import org.bukkit.scoreboard.ScoreboardManager;

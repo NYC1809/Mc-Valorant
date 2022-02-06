@@ -1,9 +1,10 @@
 package de.nyc.valorant.models;
 
-import org.bukkit.scheduler.BukkitRunnable;
+import de.nyc.valorant.MCValorant;
 
 public abstract class GameState {
 
+    protected final MCValorant main;
     public static final int LOBBY_PHASE = 0,
             AGENT_SELECT = 1,
             BUY_PHASE = 2,
@@ -13,7 +14,12 @@ public abstract class GameState {
             OVERTIME_2 = 6,
             ENDGAME_PHASE = 7;
 
+    public GameState(MCValorant main) {
+        this.main = main;
+    }
+
     public abstract void start();
+
     public abstract void stop();
 
 }

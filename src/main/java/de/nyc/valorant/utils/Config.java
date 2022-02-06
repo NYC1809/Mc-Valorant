@@ -1,4 +1,4 @@
-package de.nyc.valorant.models;
+package de.nyc.valorant.utils;
 
 import de.nyc.valorant.MCValorant;
 import org.bukkit.configuration.file.YamlConfiguration;

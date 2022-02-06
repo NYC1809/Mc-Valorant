@@ -2,8 +2,8 @@ package de.nyc.valorant.listeners;
 
 import de.nyc.valorant.MCValorant;
 import de.nyc.valorant.enums.GameTeam;
-import de.nyc.valorant.gamestates.GameStateManager;
-import de.nyc.valorant.ranks.TablistManager;
+import de.nyc.valorant.manager.GameStateManager;
+import de.nyc.valorant.manager.TablistManager;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.entity.Player;

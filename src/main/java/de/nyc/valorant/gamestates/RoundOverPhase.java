@@ -5,10 +5,8 @@ import de.nyc.valorant.models.GameState;
 
 public class RoundOverPhase extends GameState {
 
-    private final MCValorant main;
-
     public RoundOverPhase(MCValorant main) {
-        this.main = main;
+        super(main);
     }
 
     @Override

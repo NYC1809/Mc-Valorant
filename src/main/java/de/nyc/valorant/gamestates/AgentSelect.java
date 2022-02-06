@@ -5,11 +5,10 @@ import de.nyc.valorant.models.GameState;
 
 public class AgentSelect extends GameState {
 
-    private final MCValorant main;
-
     public AgentSelect(MCValorant main) {
-        this.main = main;
+        super(main);
     }
+
     @Override
     public void start() {
 

@@ -1,4 +1,4 @@
-package de.nyc.valorant.models;
+package de.nyc.valorant.utils;
 
 public class KeyValuePair<K, V> {
 

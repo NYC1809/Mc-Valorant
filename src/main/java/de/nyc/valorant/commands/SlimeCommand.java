@@ -14,7 +14,8 @@ import org.bukkit.potion.PotionEffectType;
 
 import java.util.Objects;
 
-public class TestCommand implements CommandExecutor {
+public class SlimeCommand implements CommandExecutor {
+
     @Override
     public boolean onCommand(CommandSender sender, Command command, String label, String[] args) {
         Player player = (Player) sender;
@@ -51,8 +52,6 @@ public class TestCommand implements CommandExecutor {
         armorStand_body.addPassenger(slime_body);
         armorStand_body.setCollidable(false);
 
-
-
-        return false;
+        return true;
     }
 }

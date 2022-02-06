@@ -5,10 +5,8 @@ import de.nyc.valorant.models.GameState;
 
 public class BuyPhase extends GameState {
 
-    private final MCValorant main;
-
     public BuyPhase(MCValorant main) {
-        this.main = main;
+        super(main);
     }
 
     @Override

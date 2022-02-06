@@ -5,10 +5,8 @@ import de.nyc.valorant.models.GameState;
 
 public class IngamePhase extends GameState {
 
-    private final MCValorant main;
-
     public IngamePhase(MCValorant main) {
-        this.main = main;
+        super(main);
     }
 
     @Override

@@ -1,14 +1,14 @@
 package de.nyc.valorant;
 
-import de.nyc.valorant.commands.TestCommand;
+import de.nyc.valorant.commands.SlimeCommand;
 import de.nyc.valorant.enums.Weapon;
 import de.nyc.valorant.models.BlockInfo;
 import de.nyc.valorant.models.GameState;
-import de.nyc.valorant.gamestates.GameStateManager;
+import de.nyc.valorant.manager.GameStateManager;
 import de.nyc.valorant.listeners.PlayerJoin;
-import de.nyc.valorant.models.KeyValuePair;
-import de.nyc.valorant.ranks.TablistManager;
-import de.nyc.valorant.models.Config;
+import de.nyc.valorant.utils.KeyValuePair;
+import de.nyc.valorant.manager.TablistManager;
+import de.nyc.valorant.utils.Config;
 import de.nyc.valorant.listeners.PlayerInteract;
 import de.nyc.valorant.utils.FileUtils;
 import org.bukkit.Bukkit;
@@ -40,7 +40,7 @@ public final class MCValorant extends JavaPlugin {
         pm.registerEvents(new PlayerJoin(this), this);
         pm.registerEvents(new PlayerInteract(this), this);
 
-        registerCommand("slime", new TestCommand());
+        registerCommand("slime", new SlimeCommand());
 
         gameStateManager = new GameStateManager(this);
         gameStateManager.setCurrentGameState(GameState.LOBBY_PHASE);
