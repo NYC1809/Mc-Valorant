@@ -4,6 +4,7 @@ import de.nyc.valorant.MCValorant;
 import de.nyc.valorant.enums.Weapon;
 import de.nyc.valorant.models.BlockInfo;
 import de.nyc.valorant.models.BulletInfo;
+import de.nyc.valorant.models.KeyValuePair;
 import org.bukkit.Location;
 import org.bukkit.Particle;
 import org.bukkit.block.Block;
@@ -14,6 +15,9 @@ import org.bukkit.event.block.Action;
 import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.util.Vector;
+
+import java.time.Duration;
+import java.time.LocalDateTime;
 
 public class PlayerInteract implements Listener {
 
@@ -38,13 +42,23 @@ public class PlayerInteract implements Listener {
             return;
         }
 
-        BulletInfo bi = weapon.getBulletInfo();
+        Location loc = player.getEyeLocation();
+        if (loc.getWorld() == null) {
+            return;
+        }
+
         if (event.getAction() == Action.RIGHT_CLICK_AIR || event.getAction() == Action.RIGHT_CLICK_BLOCK) {
-            Location loc = player.getEyeLocation();
-            if (loc.getWorld() == null) {
-                return;
+            if (main.lastShot.containsKey(player)) {
+                KeyValuePair<Weapon, LocalDateTime> lastShot = main.lastShot.get(player);
+                if (lastShot.getKey() == weapon) {
+                    Duration wait = Duration.ofMillis(Math.round(1000 / weapon.getShotsPerSec()));
+                    if (Duration.between(lastShot.getValue(), LocalDateTime.now()).compareTo(wait) <= 0) {
+                        return;
+                    }
+                }
             }
 
+            BulletInfo bi = weapon.getBulletInfo();
             boolean hasPenetrated = false;
             float damage = bi.baseDamage;
             Vector direction = loc.getDirection().normalize();
@@ -71,6 +85,8 @@ public class PlayerInteract implements Listener {
                     break;
                 }
             }
+
+            main.lastShot.put(player, new KeyValuePair<>(weapon, LocalDateTime.now()));
 
             // TODO check for player hits
         }
