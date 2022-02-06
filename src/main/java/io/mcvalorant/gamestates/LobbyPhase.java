@@ -11,7 +11,7 @@ public class LobbyPhase extends GameStateHandler {
 
     @Override
     public void start() {
-        System.out.println("[Valorant] LobbyPhase set!");
+        main.getLogger().info("[Debug] Lobby phase set.");
         main.getConfiguration().getConfig().set("LobbyPhase.started", true);
         main.getConfiguration().saveConfig();
     }

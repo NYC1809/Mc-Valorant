@@ -19,7 +19,6 @@ import java.util.Random;
 public class PlayerJoin implements Listener {
 
     private final MCValorant main;
-    private GameStateManager gameStateManager;
 
     public PlayerJoin(MCValorant main) {
         this.main = main;
@@ -30,7 +29,7 @@ public class PlayerJoin implements Listener {
         Player player = event.getPlayer();
 
         TabListManager tm = main.getTabListManager();
-        gameStateManager = main.getGameStateManager();
+        GameStateManager gameStateManager = main.getGameStateManager();
 
         if (gameStateManager.getGameState() == GameState.LOBBY_PHASE) {
             if (tm.getTeamSize(GameTeam.TEAM1) >= 5 && tm.getTeamSize(GameTeam.TEAM2) >= 5) {

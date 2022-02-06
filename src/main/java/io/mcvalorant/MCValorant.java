@@ -38,7 +38,9 @@ public final class MCValorant extends JavaPlugin {
     public void onEnable() {
         LocalDateTime start = LocalDateTime.now();
         getLogger().info("Loading configurations...");
-        configuration = new Config(this, "config.yml");
+        if (FileUtils.copyResource(this, "config.yml")) {
+            configuration = new Config(this, "config.yml");
+        }
         if (FileUtils.copyResource(this, "en.yml")) {
             langConfig = new Config(this, "en.yml");
         }

@@ -4,7 +4,6 @@ import io.mcvalorant.MCValorant;
 import io.mcvalorant.enums.GameTeam;
 import io.mcvalorant.utils.KeyValuePair;
 import net.kyori.adventure.text.Component;
-import net.kyori.adventure.text.format.TextColor;
 import org.bukkit.entity.Player;
 import org.bukkit.scoreboard.Scoreboard;
 import org.bukkit.scoreboard.ScoreboardManager;
