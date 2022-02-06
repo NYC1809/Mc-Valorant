@@ -107,22 +107,27 @@ public final class MCValorant extends JavaPlugin {
                 }
 
                 String actionBar = "";
+                // shield
+                actionBar = actionBar + "§f\uD83D\uDEE1 §b" + ig.getShield();
                 // health
-
-
+                actionBar = actionBar + " §7~ §f♥";
+                if (ig.getHealth() <= 33) {
+                    actionBar = actionBar + " §c" + ig.getHealth();
+                } else if (ig.getHealth() <= 75) {
+                    actionBar = actionBar + " §e" + ig.getHealth();
+                } else {
+                    actionBar = actionBar + " §f" + ig.getHealth();
+                }
+                actionBar = actionBar + " §7~          §7~  ";
                 // ammo
                 actionBar = actionBar + "§f\uD83D\uDDE1";
-                if (wi.getAmmo() <= 5) {
+                if (wi.getAmmo() <= Math.round(weapon.getMagazineSize() / 3.0)) {
                     actionBar = actionBar + " §c" + wi.getAmmo();
                 } else {
-                    actionBar = actionBar + " §a" + wi.getAmmo();
+                    actionBar = actionBar + " §f" + wi.getAmmo();
                 }
-                actionBar = actionBar + " §f|";
-                if (wi.getSpareAmmo() <= 5) {
-                    actionBar = actionBar + " §c" + wi.getSpareAmmo();
-                } else {
-                    actionBar = actionBar + " §a" + wi.getSpareAmmo();
-                }
+                // spare ammo
+                actionBar = actionBar + " §f| " + wi.getSpareAmmo();
                 p.sendActionBar(Component.text(actionBar));
             }
         }, 0, 5);
