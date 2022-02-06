@@ -2,15 +2,15 @@ package io.mcvalorant;
 
 import io.mcvalorant.commands.SlimeCommand;
 import io.mcvalorant.enums.GameState;
-import io.mcvalorant.enums.Weapon;
 import io.mcvalorant.gamestates.*;
-import io.mcvalorant.models.BlockInfo;
-import io.mcvalorant.manager.GameStateManager;
-import io.mcvalorant.listeners.PlayerJoin;
-import io.mcvalorant.utils.KeyValuePair;
-import io.mcvalorant.manager.TabListManager;
-import io.mcvalorant.utils.Config;
+import io.mcvalorant.listeners.PlayerChangeSlots;
 import io.mcvalorant.listeners.PlayerInteract;
+import io.mcvalorant.listeners.PlayerJoin;
+import io.mcvalorant.manager.GameStateManager;
+import io.mcvalorant.manager.TabListManager;
+import io.mcvalorant.models.BlockInfo;
+import io.mcvalorant.models.IngamePlayer;
+import io.mcvalorant.utils.Config;
 import io.mcvalorant.utils.FileUtils;
 import org.bukkit.Bukkit;
 import org.bukkit.Material;
@@ -24,11 +24,12 @@ import java.time.Duration;
 import java.time.LocalDateTime;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.UUID;
 
 public final class MCValorant extends JavaPlugin {
 
     private final Map<Material, BlockInfo> blockInfoMap = new HashMap<>();
-    private final Map<Player, KeyValuePair<Weapon, LocalDateTime>> lastShots = new HashMap<>();
+    private final Map<UUID, IngamePlayer> ingamePlayers = new HashMap<>();
     private Config configuration;
     private Config langConfig;
     private GameStateManager gameStateManager;
@@ -64,6 +65,7 @@ public final class MCValorant extends JavaPlugin {
         PluginManager pm = Bukkit.getPluginManager();
         pm.registerEvents(new PlayerJoin(this), this);
         pm.registerEvents(new PlayerInteract(this), this);
+        pm.registerEvents(new PlayerChangeSlots(), this);
 
         registerCommand("slime", new SlimeCommand());
 
@@ -91,8 +93,8 @@ public final class MCValorant extends JavaPlugin {
         return blockInfoMap;
     }
 
-    public Map<Player, KeyValuePair<Weapon, LocalDateTime>> getLastShots() {
-        return lastShots;
+    public Map<UUID, IngamePlayer> getIngamePlayers() {
+        return ingamePlayers;
     }
 
     public Config getConfiguration() {

@@ -40,7 +40,7 @@ public class GameStateManager {
         if (gameState == null) {
             return null;
         }
-        return handlers.getOrDefault(gameState, null);
+        return handlers.get(gameState);
     }
 
     /**

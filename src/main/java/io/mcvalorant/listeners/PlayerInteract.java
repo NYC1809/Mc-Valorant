@@ -4,9 +4,11 @@ import io.mcvalorant.MCValorant;
 import io.mcvalorant.enums.Weapon;
 import io.mcvalorant.models.BlockInfo;
 import io.mcvalorant.models.BulletInfo;
-import io.mcvalorant.utils.KeyValuePair;
+import io.mcvalorant.models.IngamePlayer;
+import io.mcvalorant.models.WeaponInfo;
 import org.bukkit.Location;
 import org.bukkit.Particle;
+import org.bukkit.Sound;
 import org.bukkit.block.Block;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
@@ -48,14 +50,20 @@ public class PlayerInteract implements Listener {
         }
 
         if (event.getAction() == Action.RIGHT_CLICK_AIR || event.getAction() == Action.RIGHT_CLICK_BLOCK) {
-            if (main.getLastShots().containsKey(player)) {
-                KeyValuePair<Weapon, LocalDateTime> lastShot = main.getLastShots().get(player);
-                if (lastShot.getKey() == weapon) {
-                    Duration wait = Duration.ofMillis(Math.round(1000 / weapon.getShotsPerSec()));
-                    if (Duration.between(lastShot.getValue(), LocalDateTime.now()).compareTo(wait) <= 0) {
-                        return;
-                    }
-                }
+            IngamePlayer ig = main.getIngamePlayers().get(player.getUniqueId());
+            WeaponInfo wi = ig.getWeapons().get(weapon);
+            if (wi == null) {
+                return;
+            }
+            LocalDateTime lastShot = ig.getLastShots().get(weapon);
+            Duration wait = Duration.ofMillis(Math.round(1000 / weapon.getShotsPerSec()));
+            if (Duration.between(lastShot, LocalDateTime.now()).compareTo(wait) <= 0) {
+                return;
+            }
+
+            if (ig.getWeapons().get(weapon).getAmmo() == 0) {
+                loc.getWorld().playSound(loc, Sound.BLOCK_DISPENSER_FAIL, 1.0f, 1.5f);
+                return;
             }
 
             loc.getWorld().playSound(loc, weapon.getSound(), 1.0f, weapon.getPitch());
@@ -90,7 +98,8 @@ public class PlayerInteract implements Listener {
                 }
             }
 
-            main.getLastShots().put(player, new KeyValuePair<>(weapon, LocalDateTime.now()));
+            ig.getLastShots().put(weapon, LocalDateTime.now());
+            wi.setAmmo(wi.getAmmo() - 1);
 
             // TODO check for player hits
         }

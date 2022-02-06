@@ -5,6 +5,7 @@ import io.mcvalorant.enums.GameState;
 import io.mcvalorant.enums.GameTeam;
 import io.mcvalorant.manager.GameStateManager;
 import io.mcvalorant.manager.TabListManager;
+import io.mcvalorant.models.IngamePlayer;
 import net.kyori.adventure.text.Component;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
@@ -62,6 +63,10 @@ public class PlayerJoin implements Listener {
 
         player.sendMessage("Players in team 1: " + tm.getTeamSize(GameTeam.TEAM1));
         player.sendMessage("Players in team 2: " + tm.getTeamSize(GameTeam.TEAM2));
+
+        if (!main.getIngamePlayers().containsKey(player.getUniqueId())) {
+            main.getIngamePlayers().put(player.getUniqueId(), new IngamePlayer(100, 0));
+        }
     }
 
     @EventHandler

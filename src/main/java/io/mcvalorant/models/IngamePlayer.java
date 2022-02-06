@@ -3,12 +3,14 @@ package io.mcvalorant.models;
 import io.mcvalorant.enums.StatusEffect;
 import io.mcvalorant.enums.Weapon;
 
+import java.time.LocalDateTime;
 import java.util.HashMap;
 
 public class IngamePlayer {
 
     private final HashMap<StatusEffect, StatusEffectInfo> statusEffects = new HashMap<>();
     private final HashMap<Weapon, WeaponInfo> weapons = new HashMap<>();
+    private final HashMap<Weapon, LocalDateTime> lastShots = new HashMap<>();
     private int health;
     private int shield;
 
@@ -23,6 +25,10 @@ public class IngamePlayer {
 
     public HashMap<Weapon, WeaponInfo> getWeapons() {
         return weapons;
+    }
+
+    public HashMap<Weapon, LocalDateTime> getLastShots() {
+        return lastShots;
     }
 
     public int getHealth() {
