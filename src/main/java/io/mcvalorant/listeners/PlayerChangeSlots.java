@@ -49,7 +49,7 @@ public class PlayerChangeSlots implements Listener {
             }
 
             int reloadAmmo = Math.min(wi.getSpareAmmo(), weapon.getMagazineSize() - wi.getAmmo());
-            wi.setAmmo(reloadAmmo);
+            wi.setAmmo(wi.getAmmo() + reloadAmmo);
             wi.setSpareAmmo(wi.getSpareAmmo() - reloadAmmo);
             player.playSound(player.getLocation(), Sound.BLOCK_ANVIL_USE, 1.0f, .5f);
         }
