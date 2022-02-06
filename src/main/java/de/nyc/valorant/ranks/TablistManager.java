@@ -1,18 +1,25 @@
 package de.nyc.valorant.ranks;
 
-import com.sun.tools.javac.util.Pair;
+import de.nyc.valorant.MCValorant;
 import de.nyc.valorant.enums.GameTeam;
 import de.nyc.valorant.models.KeyValuePair;
 import org.bukkit.entity.Player;
 import org.bukkit.scoreboard.Scoreboard;
+import org.bukkit.scoreboard.ScoreboardManager;
 import org.bukkit.scoreboard.Team;
 
 public class TablistManager {
 
+    private final MCValorant main;
     private Scoreboard scoreboard;
 
-    public void setPlayerTeams(Player player) {
-        scoreboard = player.getScoreboard();
+    public TablistManager(MCValorant main) {
+        this.main = main;
+        ScoreboardManager sm = main.getServer().getScoreboardManager();
+        if (sm == null) {
+            throw new NullPointerException();
+        }
+        scoreboard = sm.getMainScoreboard();
         registerTeam(GameTeam.TEAM1);
         registerTeam(GameTeam.TEAM2);
         registerTeam(GameTeam.SPECTATOR);
@@ -37,16 +44,11 @@ public class TablistManager {
     }
 
     public int getTeamSize(GameTeam team) {
-        try {
-            Team scoreboardTeam = scoreboard.getTeam(team.name());
-            if (scoreboardTeam == null) {
-                return 0;
-            }
-            return scoreboardTeam.getEntries().size();
-        } catch (NullPointerException e) {
-            e.printStackTrace();
+        Team scoreboardTeam = scoreboard.getTeam(team.name());
+        if (scoreboardTeam == null) {
             return 0;
         }
+        return scoreboardTeam.getEntries().size();
     }
 
     public boolean addToTeam(GameTeam team, Player player) {

@@ -34,7 +34,7 @@ public final class MCValorant extends JavaPlugin {
     @Override
     public void onEnable() {
         configuration = new Config(this, "config.yml");
-        tablistManager = new TablistManager();
+        tablistManager = new TablistManager(this);
 
         PluginManager pm = Bukkit.getPluginManager();
         pm.registerEvents(new PlayerJoin(this), this);
