@@ -2,6 +2,7 @@ package io.mcvalorant;
 
 import io.mcvalorant.commands.SlimeCommand;
 import io.mcvalorant.enums.GameState;
+import io.mcvalorant.enums.Weapon;
 import io.mcvalorant.gamestates.*;
 import io.mcvalorant.listeners.PlayerChangeSlots;
 import io.mcvalorant.listeners.PlayerInteract;
@@ -10,13 +11,16 @@ import io.mcvalorant.manager.GameStateManager;
 import io.mcvalorant.manager.TabListManager;
 import io.mcvalorant.models.BlockInfo;
 import io.mcvalorant.models.IngamePlayer;
+import io.mcvalorant.models.WeaponInfo;
 import io.mcvalorant.utils.Config;
 import io.mcvalorant.utils.FileUtils;
+import net.kyori.adventure.text.Component;
 import org.bukkit.Bukkit;
 import org.bukkit.Material;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.PluginCommand;
 import org.bukkit.entity.Player;
+import org.bukkit.inventory.ItemStack;
 import org.bukkit.plugin.PluginManager;
 import org.bukkit.plugin.java.JavaPlugin;
 
@@ -35,6 +39,7 @@ public final class MCValorant extends JavaPlugin {
     private GameStateManager gameStateManager;
     private TabListManager tabListManager;
 
+    @SuppressWarnings("StringConcatenation")
     @Override
     public void onEnable() {
         LocalDateTime start = LocalDateTime.now();
@@ -65,7 +70,7 @@ public final class MCValorant extends JavaPlugin {
         PluginManager pm = Bukkit.getPluginManager();
         pm.registerEvents(new PlayerJoin(this), this);
         pm.registerEvents(new PlayerInteract(this), this);
-        pm.registerEvents(new PlayerChangeSlots(), this);
+        pm.registerEvents(new PlayerChangeSlots(this), this);
 
         registerCommand("slime", new SlimeCommand());
 
@@ -78,6 +83,43 @@ public final class MCValorant extends JavaPlugin {
         }
 
         getLogger().info("§2MC-Valorant loaded in " + Duration.between(start, LocalDateTime.now()).toMillis() + "ms");
+
+        getServer().getScheduler().runTaskTimerAsynchronously(this, () -> {
+            if (getServer().getOnlinePlayers().size() == 0) {
+                return;
+            }
+            for (Player p : getServer().getOnlinePlayers()) {
+                ItemStack weaponItem = p.getInventory().getItemInMainHand();
+                Weapon weapon = Weapon.fromMaterial(weaponItem.getType());
+                if (weapon == null) {
+                    continue;
+                }
+
+                IngamePlayer ig = ingamePlayers.get(p.getUniqueId());
+                WeaponInfo wi = ig.getWeapons().get(weapon);
+                if (wi == null) {
+                    continue;
+                }
+
+                String actionBar = "";
+                // health
+
+                // ammo
+                actionBar = actionBar + "§f\uD83D\uDDE1";
+                if (wi.getAmmo() <= 5) {
+                    actionBar = actionBar + " §c" + wi.getAmmo();
+                } else {
+                    actionBar = actionBar + " §a" + wi.getAmmo();
+                }
+                actionBar = actionBar + " §f|";
+                if (wi.getSpareAmmo() <= 5) {
+                    actionBar = actionBar + " §c" + wi.getSpareAmmo();
+                } else {
+                    actionBar = actionBar + " §a" + wi.getSpareAmmo();
+                }
+                p.sendActionBar(Component.text(actionBar));
+            }
+        }, 0, 5);
     }
 
     private void registerCommand(String command, CommandExecutor executor) {
