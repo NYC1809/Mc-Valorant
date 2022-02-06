@@ -2,6 +2,7 @@ package de.nyc.valorant.ranks;
 
 import com.sun.tools.javac.util.Pair;
 import de.nyc.valorant.enums.GameTeam;
+import de.nyc.valorant.models.KeyValuePair;
 import org.bukkit.entity.Player;
 import org.bukkit.scoreboard.Scoreboard;
 import org.bukkit.scoreboard.Team;
@@ -26,8 +27,8 @@ public class TablistManager {
         st.setSuffix("");
         st.setColor(team.getColor());
         st.setAllowFriendlyFire(false);
-        for (Pair<Team.Option, Team.OptionStatus> pair : team.getOptions()) {
-            st.setOption(pair.fst, pair.snd);
+        for (KeyValuePair<Team.Option, Team.OptionStatus> pair : team.getOptions()) {
+            st.setOption(pair.getKey(), pair.getValue());
         }
     }
 
