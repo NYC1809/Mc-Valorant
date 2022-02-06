@@ -58,10 +58,14 @@ public class PlayerInteract implements Listener {
                 }
             }
 
+            loc.getWorld().playSound(loc, weapon.getSound(), 1.0f, weapon.getPitch());
+
             BulletInfo bi = weapon.getBulletInfo();
             boolean hasPenetrated = false;
             float damage = bi.baseDamage;
+            // TODO modify direction for bullet spray
             Vector direction = loc.getDirection().normalize();
+
             for (int i = 0; i < weapon.getBulletInfo().range; i++) {
                 Block pos = loc.getBlock();
                 if (main.blockInfoMap.containsKey(pos.getType())) {
@@ -81,7 +85,6 @@ public class PlayerInteract implements Listener {
                     if (!bi.silenced) {
                         loc.getWorld().spawnParticle(Particle.COMPOSTER, loc.add(direction), 1);
                     }
-                    loc.getWorld().playSound(loc, weapon.getSound(), 1.0f, weapon.getPitch());
                 } else {
                     break;
                 }
