@@ -48,8 +48,8 @@ public class PlayerInteract implements Listener {
         }
 
         if (event.getAction() == Action.RIGHT_CLICK_AIR || event.getAction() == Action.RIGHT_CLICK_BLOCK) {
-            if (main.lastShot.containsKey(player)) {
-                KeyValuePair<Weapon, LocalDateTime> lastShot = main.lastShot.get(player);
+            if (main.getLastShots().containsKey(player)) {
+                KeyValuePair<Weapon, LocalDateTime> lastShot = main.getLastShots().get(player);
                 if (lastShot.getKey() == weapon) {
                     Duration wait = Duration.ofMillis(Math.round(1000 / weapon.getShotsPerSec()));
                     if (Duration.between(lastShot.getValue(), LocalDateTime.now()).compareTo(wait) <= 0) {
@@ -62,27 +62,27 @@ public class PlayerInteract implements Listener {
 
             BulletInfo bi = weapon.getBulletInfo();
             boolean hasPenetrated = false;
-            float damage = bi.baseDamage;
+            float damage = bi.getBaseDamage();
             // TODO modify direction for bullet spray
             Vector direction = loc.getDirection().normalize();
 
-            for (int i = 0; i < weapon.getBulletInfo().range; i++) {
+            for (int i = 0; i < weapon.getBulletInfo().getRange(); i++) {
                 Block pos = loc.getBlock();
-                if (main.blockInfoMap.containsKey(pos.getType())) {
-                    BlockInfo info = main.blockInfoMap.get(pos.getType());
+                if (main.getBlockInfoMap().containsKey(pos.getType())) {
+                    BlockInfo info = main.getBlockInfoMap().get(pos.getType());
                     // bullet can only penetrate once
-                    if (info.thickness > 0) {
+                    if (info.getThickness() > 0) {
                         if (hasPenetrated) {
                             break;
                         }
-                        if (bi.penetrationRate > info.thickness) {
-                            damage = damage * (bi.penetrationRate - info.thickness);
+                        if (bi.getPenetrationRate() > info.getThickness()) {
+                            damage = damage * (bi.getPenetrationRate() - info.getThickness());
                             hasPenetrated = true;
                         } else {
                             break;
                         }
                     }
-                    if (!bi.silenced) {
+                    if (!bi.isSilenced()) {
                         loc.getWorld().spawnParticle(Particle.COMPOSTER, loc.add(direction), 1);
                     }
                 } else {
@@ -90,7 +90,7 @@ public class PlayerInteract implements Listener {
                 }
             }
 
-            main.lastShot.put(player, new KeyValuePair<>(weapon, LocalDateTime.now()));
+            main.getLastShots().put(player, new KeyValuePair<>(weapon, LocalDateTime.now()));
 
             // TODO check for player hits
         }

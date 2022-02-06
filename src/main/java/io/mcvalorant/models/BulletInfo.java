@@ -2,12 +2,12 @@ package io.mcvalorant.models;
 
 public class BulletInfo {
 
-    public final int baseDamage;
-    public final float bodyMultiplier;
-    public final float legsMultiplier;
-    public final float penetrationRate;
-    public final int range;
-    public final boolean silenced;
+    private final int baseDamage;
+    private final float bodyMultiplier;
+    private final float legsMultiplier;
+    private final float penetrationRate;
+    private final int range;
+    private final boolean silenced;
 
     public BulletInfo(int baseDamage, float bodyMultiplier, float legsMultiplier, float penetrationRate, int range, boolean silenced) {
         this.baseDamage = baseDamage;
@@ -18,4 +18,27 @@ public class BulletInfo {
         this.silenced = silenced;
     }
 
+    public int getBaseDamage() {
+        return baseDamage;
+    }
+
+    public float getBodyMultiplier() {
+        return bodyMultiplier;
+    }
+
+    public float getLegsMultiplier() {
+        return legsMultiplier;
+    }
+
+    public float getPenetrationRate() {
+        return penetrationRate;
+    }
+
+    public int getRange() {
+        return range;
+    }
+
+    public boolean isSilenced() {
+        return silenced;
+    }
 }

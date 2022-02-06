@@ -27,8 +27,8 @@ import java.util.Map;
 
 public final class MCValorant extends JavaPlugin {
 
-    public final Map<Material, BlockInfo> blockInfoMap = new HashMap<>();
-    public final Map<Player, KeyValuePair<Weapon, LocalDateTime>> lastShot = new HashMap<>();
+    private final Map<Material, BlockInfo> blockInfoMap = new HashMap<>();
+    private final Map<Player, KeyValuePair<Weapon, LocalDateTime>> lastShots = new HashMap<>();
     private Config configuration;
     private Config langConfig;
     private GameStateManager gameStateManager;
@@ -85,6 +85,14 @@ public final class MCValorant extends JavaPlugin {
             return;
         }
         cmd.setExecutor(executor);
+    }
+
+    public Map<Material, BlockInfo> getBlockInfoMap() {
+        return blockInfoMap;
+    }
+
+    public Map<Player, KeyValuePair<Weapon, LocalDateTime>> getLastShots() {
+        return lastShots;
     }
 
     public Config getConfiguration() {
