@@ -73,7 +73,7 @@ public class TabListManager {
         if (scoreboardTeam == null) {
             return false;
         }
-        scoreboardTeam.getEntries().clear();
+        scoreboardTeam.getEntries().forEach(scoreboardTeam::removeEntry);
         return true;
     }
 
