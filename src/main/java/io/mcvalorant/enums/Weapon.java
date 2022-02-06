@@ -76,4 +76,15 @@ public enum Weapon {
     public float getVolume() {
         return volume;
     }
+
+    public static Weapon fromMaterial(Material material) {
+        Weapon weapon = null;
+        for (Weapon w : Weapon.values()) {
+            if (w.getMaterial() == material) {
+                weapon = w;
+                break;
+            }
+        }
+        return weapon;
+    }
 }

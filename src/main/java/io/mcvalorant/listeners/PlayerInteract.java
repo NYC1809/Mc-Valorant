@@ -33,13 +33,7 @@ public class PlayerInteract implements Listener {
     public void onInteract(PlayerInteractEvent event) {
         Player player = event.getPlayer();
         ItemStack weaponItem = player.getInventory().getItemInMainHand();
-        Weapon weapon = null;
-        for (Weapon w : Weapon.values()) {
-            if (w.getMaterial() == weaponItem.getType()) {
-                weapon = w;
-                break;
-            }
-        }
+        Weapon weapon = Weapon.fromMaterial(weaponItem.getType());
         if (weapon == null) {
             return;
         }
@@ -56,9 +50,11 @@ public class PlayerInteract implements Listener {
                 return;
             }
             LocalDateTime lastShot = ig.getLastShots().get(weapon);
-            Duration wait = Duration.ofMillis(Math.round(1000 / weapon.getShotsPerSec()));
-            if (Duration.between(lastShot, LocalDateTime.now()).compareTo(wait) <= 0) {
-                return;
+            if (lastShot != null) {
+                Duration wait = Duration.ofMillis(Math.round(1000 / weapon.getShotsPerSec()));
+                if (Duration.between(lastShot, LocalDateTime.now()).compareTo(wait) <= 0) {
+                    return;
+                }
             }
 
             if (ig.getWeapons().get(weapon).getAmmo() == 0) {

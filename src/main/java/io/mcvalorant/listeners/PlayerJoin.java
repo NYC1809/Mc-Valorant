@@ -3,9 +3,11 @@ package io.mcvalorant.listeners;
 import io.mcvalorant.MCValorant;
 import io.mcvalorant.enums.GameState;
 import io.mcvalorant.enums.GameTeam;
+import io.mcvalorant.enums.Weapon;
 import io.mcvalorant.manager.GameStateManager;
 import io.mcvalorant.manager.TabListManager;
 import io.mcvalorant.models.IngamePlayer;
+import io.mcvalorant.models.WeaponInfo;
 import net.kyori.adventure.text.Component;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
@@ -14,6 +16,7 @@ import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.player.PlayerJoinEvent;
 import org.bukkit.event.player.PlayerLoginEvent;
+import org.bukkit.inventory.ItemStack;
 
 import java.util.Random;
 
@@ -66,6 +69,20 @@ public class PlayerJoin implements Listener {
 
         if (!main.getIngamePlayers().containsKey(player.getUniqueId())) {
             main.getIngamePlayers().put(player.getUniqueId(), new IngamePlayer(100, 0));
+        }
+        IngamePlayer ig = main.getIngamePlayers().get(player.getUniqueId());
+        ig.getWeapons().clear();
+        for (int i = 0; i < 9; i++) {
+            ItemStack weaponItem = player.getInventory().getItem(i);
+            if (weaponItem != null) {
+                Weapon weapon = Weapon.fromMaterial(weaponItem.getType());
+                if (weapon != null) {
+                    ig.getWeapons().put(weapon, new WeaponInfo(
+                            weapon.getMagazineSize(),
+                            weapon.getInitialAmmo() - weapon.getMagazineSize())
+                    );
+                }
+            }
         }
     }
 
