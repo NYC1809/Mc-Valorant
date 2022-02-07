@@ -30,9 +30,8 @@ public class TeamCommand implements CommandExecutor, TabCompleter {
     public boolean onCommand(@NotNull CommandSender sender, @NotNull Command command, @NotNull String label, @NotNull String[] args) {
         if (sender instanceof Player) {
             Player player = (Player) sender;
-            GameStateManager gm = new GameStateManager();
-            main.getLogger().info(gm.getGameState().name());
-            if (gm.getGameState() != null && gm.getGameState().equals(GameState.LOBBY_PHASE)) {
+            GameStateManager gm = main.getGameStateManager();
+            if (gm.getGameState() == GameState.LOBBY_PHASE) {
                 player.sendMessage(">> Gamestate: LobbyPhase");
 
                 switch (args[0].toLowerCase()) {
