@@ -15,7 +15,6 @@ import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 import java.util.Objects;
 
@@ -31,9 +30,9 @@ public class TeamCommand implements CommandExecutor, TabCompleter {
     public boolean onCommand(@NotNull CommandSender sender, @NotNull Command command, @NotNull String label, @NotNull String[] args) {
         if (sender instanceof Player) {
             Player player = (Player) sender;
-            TabListManager tm = main.getTabListManager();
-            GameStateManager gameStateManager = new GameStateManager();
-            if (gameStateManager.getGameState() == GameState.LOBBY_PHASE) {
+            GameStateManager gm = new GameStateManager();
+            main.getLogger().info(gm.getGameState().name());
+            if (gm.getGameState() != null && gm.getGameState().equals(GameState.LOBBY_PHASE)) {
                 player.sendMessage(">> Gamestate: LobbyPhase");
 
                 switch (args[0].toLowerCase()) {
