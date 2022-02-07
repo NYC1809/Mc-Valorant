@@ -8,7 +8,10 @@ authors: [ NYC_1809, Hakuyamu ]
 commands:
   slime:
     description: Creates an entity to find head hitboxes
+    permission: valorant.command.slime
   team:
     description: Command to change / set teams
+    permission: valorant.command.team
   gamestate:
     description: Set / get active gamestate
+    permission: valorant.command.gamestate

@@ -8,22 +8,28 @@ import io.mcvalorant.manager.TabListManager;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
+import org.bukkit.command.TabCompleter;
 import org.bukkit.entity.Player;
+import org.bukkit.util.StringUtil;
 import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
 import java.util.Objects;
 
-public class ChangeTeam implements CommandExecutor {
+public class TeamCommand implements CommandExecutor, TabCompleter {
 
     private final MCValorant main;
 
-    public ChangeTeam(MCValorant main) {
+    public TeamCommand(MCValorant main) {
         this.main = main;
     }
 
     @Override
     public boolean onCommand(@NotNull CommandSender sender, @NotNull Command command, @NotNull String label, @NotNull String[] args) {
-        if(sender instanceof Player) {
+        if (sender instanceof Player) {
             Player player = (Player) sender;
             TabListManager tm = main.getTabListManager();
             GameStateManager gameStateManager = new GameStateManager();
@@ -31,40 +37,25 @@ public class ChangeTeam implements CommandExecutor {
                 player.sendMessage(">> Gamestate: LobbyPhase");
 
                 switch (args[0].toLowerCase()) {
-                    case "changeto":
+                    case "changeto" -> {
                         switch (args[1].toLowerCase()) {
-                            case "team_1":
-                                changeToTeam(GameTeam.TEAM1, player);
-                                break;
-                            case "team_2":
-                                changeToTeam(GameTeam.TEAM2, player);
-                                break;
-                            case "team_spectator":
-                                changeToTeam(GameTeam.SPECTATOR, player);
-                                break;
-
+                            case "team_1" -> changeToTeam(GameTeam.TEAM1, player);
+                            case "team_2" -> changeToTeam(GameTeam.TEAM2, player);
+                            case "team_spectator" -> changeToTeam(GameTeam.SPECTATOR, player);
                         }
-                        break;
-                    case "set":
-                        if(player.isOp()) {
-                            if(args.length == 3) {
-                                switch (args[1].toLowerCase()) {
-                                    case "team_1":
-                                        changeToTeam(GameTeam.TEAM1, main.getServer().getPlayer(args[2]));
-                                        break;
-                                    case "team_2":
-                                        changeToTeam(GameTeam.TEAM2, main.getServer().getPlayer(args[2]));
-                                        break;
-                                    case "team_spectator":
-                                        changeToTeam(GameTeam.SPECTATOR, main.getServer().getPlayer(args[2]));
-                                        break;
-                                }
-
-                            } else {
-                                player.sendMessage("Please use /team set <team> <player>");
+                    }
+                    case "set" -> {
+                        if(args.length == 3) {
+                            switch (args[1].toLowerCase()) {
+                                case "team_1" -> changeToTeam(GameTeam.TEAM1, main.getServer().getPlayer(args[2]));
+                                case "team_2" -> changeToTeam(GameTeam.TEAM2, main.getServer().getPlayer(args[2]));
+                                case "team_spectator" -> changeToTeam(GameTeam.SPECTATOR, main.getServer().getPlayer(args[2]));
                             }
+
+                        } else {
+                            player.sendMessage("Please use /team set <team> <player>");
                         }
-                        break;
+                    }
                 }
 
 
@@ -109,4 +100,21 @@ public class ChangeTeam implements CommandExecutor {
 
     }
 
+    @Override
+    public @Nullable List<String> onTabComplete(@NotNull CommandSender sender, @NotNull Command command, @NotNull String label, @NotNull String[] args) {
+        List<String> arguments = new ArrayList<>();
+        List<String> completions = new ArrayList<>();
+
+        if (args.length == 1) {
+            arguments.add("changeto");
+            arguments.add("set");
+            StringUtil.copyPartialMatches(args[0], arguments, completions);
+        }
+        if (args.length == 2) {
+            for (GameTeam gameTeam : GameTeam.values()) {
+                arguments.add(gameTeam.name().toLowerCase());
+            }
+        }
+        return null;
+    }
 }
