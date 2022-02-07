@@ -11,6 +11,7 @@ import io.mcvalorant.gamestates.*;
 import io.mcvalorant.listeners.PlayerChangeSlots;
 import io.mcvalorant.listeners.PlayerInteract;
 import io.mcvalorant.listeners.PlayerJoin;
+import io.mcvalorant.listeners.PlayerSwapHandItems;
 import io.mcvalorant.manager.GameStateManager;
 import io.mcvalorant.manager.TabListManager;
 import io.mcvalorant.models.BlockInfo;
@@ -82,6 +83,7 @@ public final class MCValorant extends JavaPlugin {
         pm.registerEvents(new PlayerJoin(this), this);
         pm.registerEvents(new PlayerInteract(this), this);
         pm.registerEvents(new PlayerChangeSlots(this), this);
+        pm.registerEvents(new PlayerSwapHandItems(this), this);
 
         registerCommand("slime", new SlimeCommand());
         registerCommand("team", new TeamCommand(this));
