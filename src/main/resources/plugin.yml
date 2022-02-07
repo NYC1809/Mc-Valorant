@@ -8,3 +8,7 @@ authors: [ NYC_1809, Hakuyamu ]
 commands:
   slime:
     description: Creates an entity to find head hitboxes
+  team:
+    description: Command to change / set teams
+  gamestate:
+    description: Set / get active gamestate

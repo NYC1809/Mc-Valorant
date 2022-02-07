@@ -1,5 +1,8 @@
 package io.mcvalorant;
 
+import io.mcvalorant.commands.ChangeTeam;
+import io.mcvalorant.commands.ChangeTeamTabCompleter;
+import io.mcvalorant.commands.SetGameStateCommand;
 import io.mcvalorant.commands.SlimeCommand;
 import io.mcvalorant.enums.GameState;
 import io.mcvalorant.enums.GameTeam;
@@ -29,6 +32,7 @@ import java.time.Duration;
 import java.time.LocalDateTime;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Objects;
 import java.util.UUID;
 
 public final class MCValorant extends JavaPlugin {
@@ -54,17 +58,9 @@ public final class MCValorant extends JavaPlugin {
         blockInfoMap.put(Material.STONE, new BlockInfo(1f));
         blockInfoMap.put(Material.OAK_WOOD, new BlockInfo(.5f));
         blockInfoMap.put(Material.AIR, new BlockInfo(0));
+        blockInfoMap.put(Material.BARRIER, new BlockInfo(0));
 
-        getLogger().info("Registering handlers...");
-        gameStateManager = new GameStateManager();
-        gameStateManager.registerHandler(GameState.LOBBY_PHASE, new LobbyPhase(this));
-        gameStateManager.registerHandler(GameState.AGENT_SELECT, new AgentSelect(this));
-        gameStateManager.registerHandler(GameState.BUY_PHASE, new BuyPhase(this));
-        gameStateManager.registerHandler(GameState.INGAME_PHASE, new IngamePhase(this));
-        gameStateManager.registerHandler(GameState.ROUND_OVER, new RoundOverPhase(this));
-        gameStateManager.registerHandler(GameState.OVERTIME_1, new Overtime1(this));
-        gameStateManager.registerHandler(GameState.OVERTIME_2, new Overtime2(this));
-        gameStateManager.registerHandler(GameState.ENDGAME_PHASE, new EndgamePhase(this));
+        registerGamestateHandler();
 
         tabListManager = new TabListManager(this);
         tabListManager.clearTeam(GameTeam.TEAM1);
@@ -78,6 +74,9 @@ public final class MCValorant extends JavaPlugin {
         pm.registerEvents(new PlayerChangeSlots(this), this);
 
         registerCommand("slime", new SlimeCommand());
+        registerCommand("team", new ChangeTeam(this));
+        registerCommand("gamestate", new SetGameStateCommand(this));
+        Objects.requireNonNull(getCommand("team")).setTabCompleter(new ChangeTeamTabCompleter());
 
         if (!gameStateManager.setGameState(GameState.LOBBY_PHASE)) {
             getLogger().severe("Lobby phase failed to start.");
@@ -136,6 +135,19 @@ public final class MCValorant extends JavaPlugin {
             return;
         }
         cmd.setExecutor(executor);
+    }
+
+    public void registerGamestateHandler() {
+        getLogger().info("Registering handlers...");
+        gameStateManager = new GameStateManager();
+        gameStateManager.registerHandler(GameState.LOBBY_PHASE, new LobbyPhase(this));
+        gameStateManager.registerHandler(GameState.AGENT_SELECT, new AgentSelect(this));
+        gameStateManager.registerHandler(GameState.BUY_PHASE, new BuyPhase(this));
+        gameStateManager.registerHandler(GameState.INGAME_PHASE, new IngamePhase(this));
+        gameStateManager.registerHandler(GameState.ROUND_OVER, new RoundOverPhase(this));
+        gameStateManager.registerHandler(GameState.OVERTIME_1, new Overtime1(this));
+        gameStateManager.registerHandler(GameState.OVERTIME_2, new Overtime2(this));
+        gameStateManager.registerHandler(GameState.ENDGAME_PHASE, new EndgamePhase(this));
     }
 
     public Map<Material, BlockInfo> getBlockInfoMap() {

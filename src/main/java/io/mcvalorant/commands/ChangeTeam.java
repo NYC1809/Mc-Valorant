@@ -1,6 +1,7 @@
 package io.mcvalorant.commands;
 
 import io.mcvalorant.MCValorant;
+import io.mcvalorant.enums.GameState;
 import io.mcvalorant.enums.GameTeam;
 import io.mcvalorant.manager.GameStateManager;
 import io.mcvalorant.manager.TabListManager;
@@ -26,8 +27,7 @@ public class ChangeTeam implements CommandExecutor {
             Player player = (Player) sender;
             TabListManager tm = main.getTabListManager();
             GameStateManager gameStateManager = new GameStateManager();
-            assert gameStateManager.getGameState() != null;
-            if (gameStateManager.getGameState().getFriendlyName().equals("LobbyPhase")) {
+            if (gameStateManager.getGameState() == GameState.LOBBY_PHASE) {
                 player.sendMessage(">> Gamestate: LobbyPhase");
 
                 switch (args[0].toLowerCase()) {
@@ -68,7 +68,11 @@ public class ChangeTeam implements CommandExecutor {
                 }
 
 
+            } else {
+                player.sendMessage("Gamephase is not in the \"LobbyPhase\"!");
             }
+
+
         }
 
         return false;
