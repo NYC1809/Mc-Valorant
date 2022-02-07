@@ -1,5 +1,6 @@
 package io.mcvalorant;
 
+import de.leonheuer.mcguiapi.gui.GUIFactory;
 import io.mcvalorant.commands.TeamCommand;
 import io.mcvalorant.commands.GameStateCommand;
 import io.mcvalorant.commands.SlimeCommand;
@@ -41,6 +42,7 @@ public final class MCValorant extends JavaPlugin {
     private Config langConfig;
     private GameStateManager gameStateManager;
     private TabListManager tabListManager;
+    private GUIFactory guiFactory;
 
     @Override
     public void onEnable() {
@@ -73,6 +75,8 @@ public final class MCValorant extends JavaPlugin {
         tabListManager.clearTeam(GameTeam.TEAM2);
         tabListManager.clearTeam(GameTeam.SPECTATOR);
         getLogger().info("Cleared all Teams");
+
+        guiFactory = new GUIFactory(this);
 
         PluginManager pm = Bukkit.getPluginManager();
         pm.registerEvents(new PlayerJoin(this), this);
@@ -166,4 +170,7 @@ public final class MCValorant extends JavaPlugin {
         return tabListManager;
     }
 
+    public GUIFactory getGuiFactory() {
+        return guiFactory;
+    }
 }
