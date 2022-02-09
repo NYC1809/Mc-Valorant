@@ -1,6 +1,8 @@
 package io.mcvalorant.enums;
 
 import io.mcvalorant.models.BulletInfo;
+import io.mcvalorant.models.WeaponInfo;
+import org.apache.commons.lang.StringUtils;
 import org.bukkit.Material;
 import org.bukkit.Sound;
 
@@ -75,6 +77,16 @@ public enum Weapon {
 
     public float getVolume() {
         return volume;
+    }
+
+    public String getFriendlyName() {
+        String[] name = this.name().toLowerCase().split("_");
+        name[0] = StringUtils.capitalize(name[0]);
+        return String.join(" ", name);
+    }
+
+    public WeaponInfo getNewWeaponInfo() {
+        return new WeaponInfo(magazineSize, initialAmmo - magazineSize);
     }
 
     public static Weapon fromMaterial(Material material) {

@@ -84,7 +84,7 @@
         <dependency>
             <groupId>com.github.heuerleon</groupId>
             <artifactId>mcguiapi</artifactId>
-            <version>v1.0.1</version>
+            <version>v1.2.0</version>
         </dependency>
     </dependencies>
 </project>
