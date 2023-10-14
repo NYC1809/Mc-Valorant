@@ -4,8 +4,8 @@ import io.mcvalorant.MCValorant;
 import io.mcvalorant.enums.GameState;
 import io.mcvalorant.enums.GameTeam;
 import io.mcvalorant.enums.Weapon;
-import io.mcvalorant.manager.GameStateManager;
-import io.mcvalorant.manager.TabListManager;
+import io.mcvalorant.GameStateHolder;
+import io.mcvalorant.controller.ScoreboardTeamsController;
 import io.mcvalorant.models.IngamePlayer;
 import io.mcvalorant.models.WeaponInfo;
 import net.kyori.adventure.text.Component;
@@ -32,10 +32,10 @@ public class PlayerJoin implements Listener {
     public void onJoin(PlayerJoinEvent event) {
         Player player = event.getPlayer();
 
-        TabListManager tm = main.getTabListManager();
-        GameStateManager gameStateManager = main.getGameStateManager();
+        ScoreboardTeamsController tm = main.getTabListManager();
+        GameStateHolder gameStateHolder = main.getGameStateManager();
 
-        if (gameStateManager.getGameState() == GameState.LOBBY_PHASE) {
+        if (gameStateHolder.getGameState() == GameState.LOBBY_PHASE) {
             if (tm.getTeamSize(GameTeam.TEAM1) >= 5 && tm.getTeamSize(GameTeam.TEAM2) >= 5) {
                 tm.addToTeam(GameTeam.SPECTATOR, player);
             } else {

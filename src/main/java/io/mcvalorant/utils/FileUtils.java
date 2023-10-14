@@ -16,7 +16,6 @@ public class FileUtils {
      * @param resourceName The file name of the resource
      * @return Whether the operation succeeded. Will also return true if the file already exists in the data folder.
      */
-    @SuppressWarnings("UnstableApiUsage")
     public static boolean copyResource(JavaPlugin main, String resourceName) {
         File destination = new File(main.getDataFolder(), resourceName);
         URL resource = main.getClass().getClassLoader().getResource(resourceName);

@@ -1,22 +1,19 @@
-package io.mcvalorant.manager;
+package io.mcvalorant.controller;
 
 import io.mcvalorant.MCValorant;
 import io.mcvalorant.enums.GameTeam;
 import io.mcvalorant.utils.KeyValuePair;
 import net.kyori.adventure.text.Component;
-import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 import org.bukkit.scoreboard.Scoreboard;
 import org.bukkit.scoreboard.ScoreboardManager;
 import org.bukkit.scoreboard.Team;
 
-public class TabListManager {
+public class ScoreboardTeamsController {
 
-    private final MCValorant main;
     private final Scoreboard scoreboard;
 
-    public TabListManager(MCValorant main) {
-        this.main = main;
+    public ScoreboardTeamsController(MCValorant main) {
         ScoreboardManager sm = main.getServer().getScoreboardManager();
         scoreboard = sm.getMainScoreboard();
         registerTeam(GameTeam.TEAM1);

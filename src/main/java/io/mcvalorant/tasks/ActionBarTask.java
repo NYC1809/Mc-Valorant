@@ -4,6 +4,7 @@ import io.mcvalorant.MCValorant;
 import io.mcvalorant.enums.Weapon;
 import io.mcvalorant.models.IngamePlayer;
 import io.mcvalorant.models.WeaponInfo;
+import io.mcvalorant.utils.StringFormatUtils;
 import net.kyori.adventure.text.Component;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
@@ -41,30 +42,29 @@ public class ActionBarTask implements Runnable {
     }
 
     @NotNull
-    private static String createActionBarText(@NotNull IngamePlayer ig, WeaponInfo wi, Weapon weapon) {
-        String actionBar = "";
+    private String createActionBarText(@NotNull IngamePlayer ig, WeaponInfo wi, Weapon weapon) {
         // shield
-        actionBar = actionBar + "§b\uD83D\uDEE1 §f" + ig.getShield();
+        String actionBar = "§b\uD83D\uDEE1 §f" + ig.getShield() + " ";
         // health
-        actionBar = actionBar + "  §c♥";
-        if (ig.getHealth() <= 33) {
-            actionBar = actionBar + " §c" + ig.getHealth();
-        } else if (ig.getHealth() <= 75) {
-            actionBar = actionBar + " §e" + ig.getHealth();
-        } else {
-            actionBar = actionBar + " §f" + ig.getHealth();
-        }
-        actionBar = actionBar + "                ";
+        actionBar = actionBar + " §c♥ " + getColoredHealth(ig.getHealth()) + " ";
+        // spacer
+        actionBar = actionBar + StringFormatUtils.fixedLengthString(" ", 16);
         // ammo
         actionBar = actionBar + "§f\uD83D\uDDE1";
-        if (wi.getAmmo() <= Math.round(weapon.getMagazineSize() / 3.0)) {
-            actionBar = actionBar + " §c" + wi.getAmmo();
-        } else {
-            actionBar = actionBar + " §f" + wi.getAmmo();
-        }
-        // spare ammo
-        actionBar = actionBar + " §f| " + wi.getSpareAmmo();
+        long minAmmo = Math.round(weapon.getMagazineSize() / 3.0);
+        actionBar = actionBar + getColoredAmmo(wi.getAmmo(), minAmmo, wi.getSpareAmmo());
         return actionBar;
+    }
+
+    private String getColoredHealth(int health) {
+        if (health <= 33) return "§c" + health;
+        if (health <= 75) return "§e" + health;
+        return "§f" + health;
+    }
+
+    private String getColoredAmmo(int ammo, long minAmmo, int spareAmmo) {
+        if (ammo <= minAmmo) return " §c" + ammo + " §f| " + spareAmmo;
+        return " §f" + ammo + " §f| " + spareAmmo;
     }
 
 }

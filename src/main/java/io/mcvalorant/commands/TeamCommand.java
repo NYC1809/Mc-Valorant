@@ -3,8 +3,8 @@ package io.mcvalorant.commands;
 import io.mcvalorant.MCValorant;
 import io.mcvalorant.enums.GameState;
 import io.mcvalorant.enums.GameTeam;
-import io.mcvalorant.manager.GameStateManager;
-import io.mcvalorant.manager.TabListManager;
+import io.mcvalorant.GameStateHolder;
+import io.mcvalorant.controller.ScoreboardTeamsController;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
@@ -30,7 +30,7 @@ public class TeamCommand implements CommandExecutor, TabCompleter {
     public boolean onCommand(@NotNull CommandSender sender, @NotNull Command command, @NotNull String label, @NotNull String[] args) {
         if (sender instanceof Player) {
             Player player = (Player) sender;
-            GameStateManager gm = main.getGameStateManager();
+            GameStateHolder gm = main.getGameStateManager();
             if (gm.getGameState() == GameState.LOBBY_PHASE) {
                 player.sendMessage(">> Gamestate: LobbyPhase");
 
@@ -68,7 +68,7 @@ public class TeamCommand implements CommandExecutor, TabCompleter {
     }
 
     private void changeToTeam(GameTeam team, Player player) {
-        TabListManager tm = main.getTabListManager();
+        ScoreboardTeamsController tm = main.getTabListManager();
         if(team.name().equals(GameTeam.TEAM1.name())) {
             if(Objects.requireNonNull(tm.getScoreboard().getTeam(GameTeam.TEAM1.name())).getEntries().contains(player.getName())) {
                 player.sendMessage("Du bist schon in Team 1!");

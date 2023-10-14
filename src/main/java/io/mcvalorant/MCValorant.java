@@ -11,8 +11,7 @@ import io.mcvalorant.listeners.PlayerChangeSlots;
 import io.mcvalorant.listeners.PlayerInteract;
 import io.mcvalorant.listeners.PlayerJoin;
 import io.mcvalorant.listeners.PlayerSwapHandItems;
-import io.mcvalorant.manager.GameStateManager;
-import io.mcvalorant.manager.TabListManager;
+import io.mcvalorant.controller.ScoreboardTeamsController;
 import io.mcvalorant.models.BlockInfo;
 import io.mcvalorant.models.IngamePlayer;
 import io.mcvalorant.tasks.ActionBarTask;
@@ -39,46 +38,15 @@ public final class MCValorant extends JavaPlugin {
     private final Map<UUID, IngamePlayer> ingamePlayers = new HashMap<>();
     private Config configuration;
     private Config langConfig;
-    private GameStateManager gameStateManager;
-    private TabListManager tabListManager;
+    private GameStateHolder gameStateHolder;
+    private ScoreboardTeamsController scoreboardTeamsController;
     private GUIFactory guiFactory;
 
     @Override
     public void onEnable() {
         LocalDateTime start = LocalDateTime.now();
-        getLogger().info("Loading configurations...");
-        try {
-            Files.createDirectory(this.getDataFolder().toPath());
-        } catch (IOException e) {
-            getLogger().info("Directory already exists");
-        }
-        if (FileUtils.copyResource(this, "config.yml")) {
-            configuration = new Config(this, "config.yml");
-        }
-        if (FileUtils.copyResource(this, "en.yml")) {
-            langConfig = new Config(this, "en.yml");
-        }
-        blockInfoMap.put(Material.STONE, new BlockInfo(1f));
-        blockInfoMap.put(Material.OAK_WOOD, new BlockInfo(.5f));
-        blockInfoMap.put(Material.AIR, new BlockInfo(0));
-        blockInfoMap.put(Material.BARRIER, new BlockInfo(0));
 
-        getLogger().info("Registering handlers...");
-        gameStateManager = new GameStateManager();
-        gameStateManager.registerHandler(GameState.LOBBY_PHASE, new LobbyPhase(this));
-        gameStateManager.registerHandler(GameState.AGENT_SELECT, new AgentSelect(this));
-        gameStateManager.registerHandler(GameState.BUY_PHASE, new BuyPhase(this));
-        gameStateManager.registerHandler(GameState.INGAME_PHASE, new IngamePhase(this));
-        gameStateManager.registerHandler(GameState.ROUND_OVER, new RoundOverPhase(this));
-        gameStateManager.registerHandler(GameState.OVERTIME_1, new Overtime1(this));
-        gameStateManager.registerHandler(GameState.OVERTIME_2, new Overtime2(this));
-        gameStateManager.registerHandler(GameState.ENDGAME_PHASE, new EndgamePhase(this));
-
-        tabListManager = new TabListManager(this);
-        tabListManager.clearTeam(GameTeam.TEAM1);
-        tabListManager.clearTeam(GameTeam.TEAM2);
-        tabListManager.clearTeam(GameTeam.SPECTATOR);
-        getLogger().info("Cleared all Teams");
+        loadResources();
 
         guiFactory = new GUIFactory(this);
 
@@ -92,7 +60,28 @@ public final class MCValorant extends JavaPlugin {
         registerCommand("team", new TeamCommand(this));
         registerCommand("gamestate", new GameStateCommand(this));
 
-        if (!gameStateManager.setGameState(GameState.LOBBY_PHASE)) {
+        getLogger().info("Preparing game state...");
+        blockInfoMap.put(Material.STONE, new BlockInfo(1f));
+        blockInfoMap.put(Material.OAK_WOOD, new BlockInfo(.5f));
+        blockInfoMap.put(Material.AIR, new BlockInfo(0));
+        blockInfoMap.put(Material.BARRIER, new BlockInfo(0));
+
+        gameStateHolder = new GameStateHolder();
+        gameStateHolder.registerHandler(GameState.LOBBY_PHASE, new LobbyPhase(this));
+        gameStateHolder.registerHandler(GameState.AGENT_SELECT, new AgentSelect(this));
+        gameStateHolder.registerHandler(GameState.BUY_PHASE, new BuyPhase(this));
+        gameStateHolder.registerHandler(GameState.INGAME_PHASE, new IngamePhase(this));
+        gameStateHolder.registerHandler(GameState.ROUND_OVER, new RoundOverPhase(this));
+        gameStateHolder.registerHandler(GameState.OVERTIME_1, new Overtime1(this));
+        gameStateHolder.registerHandler(GameState.OVERTIME_2, new Overtime2(this));
+        gameStateHolder.registerHandler(GameState.ENDGAME_PHASE, new EndgamePhase(this));
+
+        scoreboardTeamsController = new ScoreboardTeamsController(this);
+        scoreboardTeamsController.clearTeam(GameTeam.TEAM1);
+        scoreboardTeamsController.clearTeam(GameTeam.TEAM2);
+        scoreboardTeamsController.clearTeam(GameTeam.SPECTATOR);
+
+        if (!gameStateHolder.setGameState(GameState.LOBBY_PHASE)) {
             getLogger().severe("Lobby phase failed to start.");
         }
 
@@ -108,6 +97,21 @@ public final class MCValorant extends JavaPlugin {
             return;
         }
         cmd.setExecutor(executor);
+    }
+
+    private void loadResources() {
+        getLogger().info("Loading configurations...");
+        try {
+            Files.createDirectory(this.getDataFolder().toPath());
+        } catch (IOException e) {
+            getLogger().info("Directory already exists");
+        }
+        if (FileUtils.copyResource(this, "config.yml")) {
+            configuration = new Config(this, "config.yml");
+        }
+        if (FileUtils.copyResource(this, "en.yml")) {
+            langConfig = new Config(this, "en.yml");
+        }
     }
 
     public Map<Material, BlockInfo> getBlockInfoMap() {
@@ -126,12 +130,12 @@ public final class MCValorant extends JavaPlugin {
         return langConfig;
     }
 
-    public GameStateManager getGameStateManager() {
-        return gameStateManager;
+    public GameStateHolder getGameStateManager() {
+        return gameStateHolder;
     }
 
-    public TabListManager getTabListManager() {
-        return tabListManager;
+    public ScoreboardTeamsController getTabListManager() {
+        return scoreboardTeamsController;
     }
 
     public GUIFactory getGuiFactory() {

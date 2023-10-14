@@ -2,7 +2,7 @@ package io.mcvalorant.commands;
 
 import io.mcvalorant.MCValorant;
 import io.mcvalorant.enums.GameState;
-import io.mcvalorant.manager.GameStateManager;
+import io.mcvalorant.GameStateHolder;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
@@ -21,7 +21,7 @@ public class GameStateCommand implements CommandExecutor {
     public boolean onCommand(@NotNull CommandSender sender, @NotNull Command command, @NotNull String label, @NotNull String[] args) {
         if (sender instanceof Player) {
             Player player = (Player) sender;
-            GameStateManager gm = main.getGameStateManager();
+            GameStateHolder gm = main.getGameStateManager();
 
             switch (args[0].toLowerCase()) {
                 case "set" -> {
