@@ -32,7 +32,6 @@ public class TeamCommand implements CommandExecutor, TabCompleter {
             Player player = (Player) sender;
             GameStateHolder gm = main.getGameStateManager();
             if (gm.getGameState() == GameState.LOBBY_PHASE) {
-                player.sendMessage(">> Gamestate: LobbyPhase");
 
                 switch (args[0].toLowerCase()) {
                     case "changeto" -> {

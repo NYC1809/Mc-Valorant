@@ -4,8 +4,8 @@ import io.mcvalorant.MCValorant;
 import io.mcvalorant.enums.GameState;
 import io.mcvalorant.enums.GameTeam;
 import io.mcvalorant.enums.Weapon;
-import io.mcvalorant.GameStateHolder;
-import io.mcvalorant.controller.ScoreboardTeamsController;
+import io.mcvalorant.manager.GameStateManager;
+import io.mcvalorant.manager.TabListManager;
 import io.mcvalorant.models.IngamePlayer;
 import io.mcvalorant.models.WeaponInfo;
 import net.kyori.adventure.text.Component;
@@ -36,36 +36,38 @@ public class PlayerJoin implements Listener {
         GameStateHolder gameStateHolder = main.getGameStateManager();
 
         if (gameStateHolder.getGameState() == GameState.LOBBY_PHASE) {
-            if (tm.getTeamSize(GameTeam.TEAM1) >= 5 && tm.getTeamSize(GameTeam.TEAM2) >= 5) {
-                tm.addToTeam(GameTeam.SPECTATOR, player);
-            } else {
-                Random random = new Random();
-                switch (random.nextInt(2)) {
-                    case 0:
-                        if(tm.getTeamSize(GameTeam.TEAM1) >= 5) {
-                            tm.addToTeam(GameTeam.TEAM2, player);
-                        } else {
-                            tm.addToTeam(GameTeam.TEAM1, player);
-                        }
-                        break;
-                    case 1:
-                        if(tm.getTeamSize(GameTeam.TEAM2) >= 5) {
-                            tm.addToTeam(GameTeam.TEAM1, player);
-                        } else {
-                            tm.addToTeam(GameTeam.TEAM2, player);
-                        }
-                        break;
-                    default:
-                        tm.addToTeam(GameTeam.SPECTATOR, player);
-                        break;
+            if(!tm.getScoreboard().getTeam(GameTeam.TEAM1.name()).getEntries().contains(player.getName()) || !tm.getScoreboard().getTeam(GameTeam.TEAM2.name()).getEntries().contains(player.getName())) {
+                if (tm.getTeamSize(GameTeam.TEAM1) >= 5 && tm.getTeamSize(GameTeam.TEAM2) >= 5) {
+                    tm.addToTeam(GameTeam.SPECTATOR, player);
+                } else {
+                    Random random = new Random();
+                    switch (random.nextInt(2)) {
+                        case 0:
+                            if (tm.getTeamSize(GameTeam.TEAM1) >= 5) {
+                                tm.addToTeam(GameTeam.TEAM2, player);
+                            } else {
+                                tm.addToTeam(GameTeam.TEAM1, player);
+                            }
+                            break;
+                        case 1:
+                            if (tm.getTeamSize(GameTeam.TEAM2) >= 5) {
+                                tm.addToTeam(GameTeam.TEAM1, player);
+                            } else {
+                                tm.addToTeam(GameTeam.TEAM2, player);
+                            }
+                            break;
+                        default:
+                            tm.addToTeam(GameTeam.SPECTATOR, player);
+                            break;
+                    }
                 }
             }
         } else {
             tm.addToTeam(GameTeam.SPECTATOR, player);
         }
 
-        player.sendMessage("Players in team 1: " + tm.getTeamSize(GameTeam.TEAM1));
-        player.sendMessage("Players in team 2: " + tm.getTeamSize(GameTeam.TEAM2));
+        main.getLogger().info("Players in team 1: " + tm.getTeamSize(GameTeam.TEAM1));
+        main.getLogger().info("Players in team 2: " + tm.getTeamSize(GameTeam.TEAM2));
 
         if (!main.getIngamePlayers().containsKey(player.getUniqueId())) {
             main.getIngamePlayers().put(player.getUniqueId(), new IngamePlayer(100, 0));
