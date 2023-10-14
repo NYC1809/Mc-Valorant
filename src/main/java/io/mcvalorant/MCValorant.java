@@ -56,7 +56,7 @@ public final class MCValorant extends JavaPlugin {
         pm.registerEvents(new PlayerChangeSlots(this), this);
         pm.registerEvents(new PlayerSwapHandItems(this), this);
 
-        registerCommand("slime", new SlimeCommand());
+
         registerCommand("team", new TeamCommand(this));
         registerCommand("gamestate", new GameStateCommand(this));
 
