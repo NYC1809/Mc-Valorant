@@ -1,9 +1,8 @@
 package io.mcvalorant.commands;
 
+import io.mcvalorant.GameStateHolder;
 import io.mcvalorant.MCValorant;
 import io.mcvalorant.enums.GameState;
-import io.mcvalorant.GameStateHolder;
-import io.mcvalorant.manager.GameStateManager;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
@@ -23,7 +22,7 @@ public class GameStateCommand implements CommandExecutor {
         if (sender instanceof Player) {
             Player player = (Player) sender;
             if(player.isOp()) {
-                GameStateHolder gm = main.getGameStateManager();
+                GameStateHolder gm = main.getGameStateHolder();
                 switch (args[0].toLowerCase()) {
                     case "set" -> {
                         try {

@@ -15,3 +15,6 @@ commands:
   gamestate:
     description: Set / get active gamestate
     permission: valorant.command.gamestate
+  debugcommand:
+    description: spawn particles at player hitboxes
+    permission: valorant.command.debugcommand

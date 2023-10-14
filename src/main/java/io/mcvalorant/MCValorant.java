@@ -1,9 +1,9 @@
 package io.mcvalorant;
 
 import de.leonheuer.mcguiapi.gui.GUIFactory;
-import io.mcvalorant.commands.GameStateCommand;
-import io.mcvalorant.commands.SlimeCommand;
+import io.mcvalorant.commands.DebugCommand;
 import io.mcvalorant.commands.TeamCommand;
+import io.mcvalorant.commands.GameStateCommand;
 import io.mcvalorant.enums.GameState;
 import io.mcvalorant.enums.GameTeam;
 import io.mcvalorant.gamestates.*;
@@ -59,6 +59,7 @@ public final class MCValorant extends JavaPlugin {
 
         registerCommand("team", new TeamCommand(this));
         registerCommand("gamestate", new GameStateCommand(this));
+        registerCommand("debugcommand", new DebugCommand(this));
 
         getLogger().info("Preparing game state...");
         blockInfoMap.put(Material.STONE, new BlockInfo(1f));
@@ -130,11 +131,11 @@ public final class MCValorant extends JavaPlugin {
         return langConfig;
     }
 
-    public GameStateHolder getGameStateManager() {
+    public GameStateHolder getGameStateHolder() {
         return gameStateHolder;
     }
 
-    public ScoreboardTeamsController getTabListManager() {
+    public ScoreboardTeamsController getScoreboardTeamsController() {
         return scoreboardTeamsController;
     }
 

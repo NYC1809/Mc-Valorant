@@ -1,11 +1,11 @@
 package io.mcvalorant.listeners;
 
+import io.mcvalorant.GameStateHolder;
 import io.mcvalorant.MCValorant;
+import io.mcvalorant.controller.ScoreboardTeamsController;
 import io.mcvalorant.enums.GameState;
 import io.mcvalorant.enums.GameTeam;
 import io.mcvalorant.enums.Weapon;
-import io.mcvalorant.manager.GameStateManager;
-import io.mcvalorant.manager.TabListManager;
 import io.mcvalorant.models.IngamePlayer;
 import io.mcvalorant.models.WeaponInfo;
 import net.kyori.adventure.text.Component;
@@ -32,8 +32,8 @@ public class PlayerJoin implements Listener {
     public void onJoin(PlayerJoinEvent event) {
         Player player = event.getPlayer();
 
-        ScoreboardTeamsController tm = main.getTabListManager();
-        GameStateHolder gameStateHolder = main.getGameStateManager();
+        ScoreboardTeamsController tm = main.getScoreboardTeamsController();
+        GameStateHolder gameStateHolder = main.getGameStateHolder();
 
         if (gameStateHolder.getGameState() == GameState.LOBBY_PHASE) {
             if(!tm.getScoreboard().getTeam(GameTeam.TEAM1.name()).getEntries().contains(player.getName()) || !tm.getScoreboard().getTeam(GameTeam.TEAM2.name()).getEntries().contains(player.getName())) {
