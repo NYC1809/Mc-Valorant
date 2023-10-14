@@ -1,12 +1,11 @@
 package io.mcvalorant;
 
 import de.leonheuer.mcguiapi.gui.GUIFactory;
-import io.mcvalorant.commands.TeamCommand;
 import io.mcvalorant.commands.GameStateCommand;
 import io.mcvalorant.commands.SlimeCommand;
+import io.mcvalorant.commands.TeamCommand;
 import io.mcvalorant.enums.GameState;
 import io.mcvalorant.enums.GameTeam;
-import io.mcvalorant.enums.Weapon;
 import io.mcvalorant.gamestates.*;
 import io.mcvalorant.listeners.PlayerChangeSlots;
 import io.mcvalorant.listeners.PlayerInteract;
@@ -16,16 +15,13 @@ import io.mcvalorant.manager.GameStateManager;
 import io.mcvalorant.manager.TabListManager;
 import io.mcvalorant.models.BlockInfo;
 import io.mcvalorant.models.IngamePlayer;
-import io.mcvalorant.models.WeaponInfo;
+import io.mcvalorant.tasks.ActionBarTask;
 import io.mcvalorant.utils.Config;
 import io.mcvalorant.utils.FileUtils;
-import net.kyori.adventure.text.Component;
 import org.bukkit.Bukkit;
 import org.bukkit.Material;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.PluginCommand;
-import org.bukkit.entity.Player;
-import org.bukkit.inventory.ItemStack;
 import org.bukkit.plugin.PluginManager;
 import org.bukkit.plugin.java.JavaPlugin;
 
@@ -100,50 +96,9 @@ public final class MCValorant extends JavaPlugin {
             getLogger().severe("Lobby phase failed to start.");
         }
 
-        getLogger().info("§2MC-Valorant loaded in " + Duration.between(start, LocalDateTime.now()).toMillis() + "ms");
+        getLogger().info("loaded in " + Duration.between(start, LocalDateTime.now()).toMillis() + "ms");
 
-        getServer().getScheduler().runTaskTimerAsynchronously(this, () -> {
-            if (getServer().getOnlinePlayers().size() == 0) {
-                return;
-            }
-            for (Player p : getServer().getOnlinePlayers()) {
-                ItemStack weaponItem = p.getInventory().getItemInMainHand();
-                Weapon weapon = Weapon.fromMaterial(weaponItem.getType());
-                if (weapon == null) {
-                    continue;
-                }
-
-                IngamePlayer ig = ingamePlayers.get(p.getUniqueId());
-                WeaponInfo wi = ig.getWeapons().get(weapon);
-                if (wi == null) {
-                    continue;
-                }
-
-                String actionBar = "";
-                // shield
-                actionBar = actionBar + "§b\uD83D\uDEE1 §f" + ig.getShield();
-                // health
-                actionBar = actionBar + "  §c♥";
-                if (ig.getHealth() <= 33) {
-                    actionBar = actionBar + " §c" + ig.getHealth();
-                } else if (ig.getHealth() <= 75) {
-                    actionBar = actionBar + " §e" + ig.getHealth();
-                } else {
-                    actionBar = actionBar + " §f" + ig.getHealth();
-                }
-                actionBar = actionBar + "                ";
-                // ammo
-                actionBar = actionBar + "§f\uD83D\uDDE1";
-                if (wi.getAmmo() <= Math.round(weapon.getMagazineSize() / 3.0)) {
-                    actionBar = actionBar + " §c" + wi.getAmmo();
-                } else {
-                    actionBar = actionBar + " §f" + wi.getAmmo();
-                }
-                // spare ammo
-                actionBar = actionBar + " §f| " + wi.getSpareAmmo();
-                p.sendActionBar(Component.text(actionBar));
-            }
-        }, 0, 1);
+        getServer().getScheduler().runTaskTimerAsynchronously(this, new ActionBarTask(this), 0, 1);
     }
 
     private void registerCommand(String command, CommandExecutor executor) {
