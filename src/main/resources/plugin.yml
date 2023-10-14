@@ -6,9 +6,6 @@ api-version: 1.20
 authors: [ NYC_1809, Hakuyamu ]
 
 commands:
-  slime:
-    description: Creates an entity to find head hitboxes
-    permission: valorant.command.slime
   team:
     description: Command to change / set teams
     permission: valorant.command.team
@@ -18,3 +15,6 @@ commands:
   debugcommand:
     description: spawn particles at player hitboxes
     permission: valorant.command.debugcommand
+  buy:
+    description: Open the loadout menu
+    permission: valorant.player.ingame

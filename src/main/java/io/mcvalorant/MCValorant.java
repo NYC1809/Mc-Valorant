@@ -10,7 +10,7 @@ import io.mcvalorant.gamestates.*;
 import io.mcvalorant.listeners.PlayerChangeSlots;
 import io.mcvalorant.listeners.PlayerInteract;
 import io.mcvalorant.listeners.PlayerJoin;
-import io.mcvalorant.listeners.PlayerSwapHandItems;
+import io.mcvalorant.listeners.PlayerBuyLoadout;
 import io.mcvalorant.controller.ScoreboardTeamsController;
 import io.mcvalorant.models.BlockInfo;
 import io.mcvalorant.models.IngamePlayer;
@@ -54,12 +54,12 @@ public final class MCValorant extends JavaPlugin {
         pm.registerEvents(new PlayerJoin(this), this);
         pm.registerEvents(new PlayerInteract(this), this);
         pm.registerEvents(new PlayerChangeSlots(this), this);
-        pm.registerEvents(new PlayerSwapHandItems(this), this);
-
-
+        pm.registerEvents(new PlayerBuyLoadout(this), this);
+        
         registerCommand("team", new TeamCommand(this));
         registerCommand("gamestate", new GameStateCommand(this));
         registerCommand("debugcommand", new DebugCommand(this));
+        registerCommand("buy", new PlayerBuyLoadout(this));
 
         getLogger().info("Preparing game state...");
         blockInfoMap.put(Material.STONE, new BlockInfo(1f));

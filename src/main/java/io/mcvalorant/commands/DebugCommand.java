@@ -8,6 +8,8 @@ import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
+import org.bukkit.scheduler.BukkitScheduler;
+import org.bukkit.scheduler.BukkitTask;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.ArrayList;
@@ -19,6 +21,7 @@ public class DebugCommand implements CommandExecutor {
 
     private final MCValorant main;
     private final ArrayList<String> playerArrayList = new ArrayList<>();
+    private BukkitTask particleSchedulerTask;
 
     public DebugCommand(MCValorant main) {
         this.main = main;
@@ -32,16 +35,17 @@ public class DebugCommand implements CommandExecutor {
             if(!playerArrayList.contains(player.getName())) {
                 playerArrayList.add(player.getName());
 
-                getServer().getScheduler().runTaskTimerAsynchronously(main, () -> {
+                particleSchedulerTask = getServer().getScheduler().runTaskTimerAsynchronously(main, () -> {
                     Location location_head = player.getLocation();
                     location_head.getWorld().spawnParticle(Particle.COMPOSTER, location_head.add(0.3, 1.8, 0.3), 1);
-                    location_head.getWorld().spawnParticle(Particle.COMPOSTER, location_head.add(-0.3, 1.8, -0.3), 1);
-                    location_head.getWorld().spawnParticle(Particle.COMPOSTER, location_head.add(0.3, 1.8, -0.3), 1);
-                    location_head.getWorld().spawnParticle(Particle.COMPOSTER, location_head.add(-0.3, 1.8, 0.3), 1);
+                    location_head.getWorld().spawnParticle(Particle.COMPOSTER, location_head.zero().add(-0.3, 1.8, -0.3), 1);
+                    location_head.getWorld().spawnParticle(Particle.COMPOSTER, location_head.zero().add(0.3, 1.8, -0.3), 1);
+                    location_head.getWorld().spawnParticle(Particle.COMPOSTER, location_head.zero().add(-0.3, 1.8, 0.3), 1);
                 }, 0, 5);
 
             } else {
                 playerArrayList.remove(player.getName());
+                particleSchedulerTask.cancel();
             }
         }
         return false;
