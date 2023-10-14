@@ -29,6 +29,8 @@ import org.bukkit.inventory.ItemStack;
 import org.bukkit.plugin.PluginManager;
 import org.bukkit.plugin.java.JavaPlugin;
 
+import java.io.IOException;
+import java.nio.file.Files;
 import java.time.Duration;
 import java.time.LocalDateTime;
 import java.util.HashMap;
@@ -49,6 +51,11 @@ public final class MCValorant extends JavaPlugin {
     public void onEnable() {
         LocalDateTime start = LocalDateTime.now();
         getLogger().info("Loading configurations...");
+        try {
+            Files.createDirectory(this.getDataFolder().toPath());
+        } catch (IOException e) {
+            getLogger().info("Directory already exists");
+        }
         if (FileUtils.copyResource(this, "config.yml")) {
             configuration = new Config(this, "config.yml");
         }

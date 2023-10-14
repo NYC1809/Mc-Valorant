@@ -2,7 +2,7 @@ package io.mcvalorant.enums;
 
 import io.mcvalorant.models.BulletInfo;
 import io.mcvalorant.models.WeaponInfo;
-import org.apache.commons.lang.StringUtils;
+import org.apache.commons.lang3.StringUtils;
 import org.bukkit.Material;
 import org.bukkit.Sound;
 
