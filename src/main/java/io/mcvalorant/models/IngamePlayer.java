@@ -13,10 +13,12 @@ public class IngamePlayer {
     private final HashMap<Weapon, LocalDateTime> lastShots = new HashMap<>();
     private int health;
     private int shield;
+    private int money;
 
-    public IngamePlayer(int health, int shield) {
+    public IngamePlayer(int health, int shield, int money) {
         this.health = health;
         this.shield = shield;
+        this.money = money;
     }
 
     public HashMap<StatusEffect, StatusEffectInfo> getStatusEffects() {
@@ -45,6 +47,14 @@ public class IngamePlayer {
 
     public void setShield(int shield) {
         this.shield = shield;
+    }
+
+    public int getMoney() {
+        return money;
+    }
+
+    public void setMoney(int money) {
+        this.money = money;
     }
 
 }
