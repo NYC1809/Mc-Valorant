@@ -1,11 +1,12 @@
-package io.mcvalorant.gamestates;
+package io.mcvalorant.rounds;
 
 import io.mcvalorant.MCValorant;
 import io.mcvalorant.models.GameStateHandler;
+import io.mcvalorant.models.RoundStateHandler;
 
-public class Overtime1 extends GameStateHandler {
+public class SecondPistolRound extends RoundStateHandler {
 
-    public Overtime1(MCValorant main) {
+    public SecondPistolRound(MCValorant main) {
         super(main);
     }
 

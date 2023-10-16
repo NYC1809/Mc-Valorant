@@ -4,15 +4,9 @@ import org.apache.commons.lang3.StringUtils;
 
 public enum GameState {
 
-    LOBBY_PHASE,
-    AGENT_SELECT,
     BUY_PHASE,
     INGAME_PHASE,
-    ROUND_OVER,
-    OVERTIME_1,
-    OVERTIME_2,
-    ENDGAME_PHASE,
-    ;
+    ROUND_OVER;
 
     public String getFriendlyName() {
         String[] name = this.name().toLowerCase().split("_");

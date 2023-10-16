@@ -3,8 +3,10 @@ package io.mcvalorant.commands;
 import io.mcvalorant.MCValorant;
 import io.mcvalorant.enums.GameState;
 import io.mcvalorant.enums.GameTeam;
-import io.mcvalorant.GameStateHolder;
+import io.mcvalorant.enums.Rounds;
+import io.mcvalorant.holder.GameStateHolder;
 import io.mcvalorant.controller.ScoreboardTeamsController;
+import io.mcvalorant.holder.RoundStateHolder;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
@@ -30,9 +32,8 @@ public class TeamCommand implements CommandExecutor, TabCompleter {
     public boolean onCommand(@NotNull CommandSender sender, @NotNull Command command, @NotNull String label, @NotNull String[] args) {
         if (sender instanceof Player) {
             Player player = (Player) sender;
-            GameStateHolder gm = main.getGameStateHolder();
-            if (gm.getGameState() == GameState.LOBBY_PHASE) {
-
+            RoundStateHolder rsh = main.getRoundStateHolder();
+            if (rsh.getRound() == Rounds.LOBBY_ROUND) {
                 switch (args[0].toLowerCase()) {
                     case "changeto" -> {
                         switch (args[1].toLowerCase()) {

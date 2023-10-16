@@ -1,11 +1,15 @@
 package io.mcvalorant.tasks;
 
 import io.mcvalorant.MCValorant;
+import io.mcvalorant.enums.Rounds;
 import io.mcvalorant.enums.Weapon;
+import io.mcvalorant.holder.RoundStateHolder;
 import io.mcvalorant.models.IngamePlayer;
+import io.mcvalorant.models.RoundStateHandler;
 import io.mcvalorant.models.WeaponInfo;
 import io.mcvalorant.utils.StringFormatUtils;
 import net.kyori.adventure.text.Component;
+import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 import org.jetbrains.annotations.NotNull;
@@ -53,6 +57,11 @@ public class ActionBarTask implements Runnable {
         actionBar = actionBar + "§f\uD83D\uDDE1";
         long minAmmo = Math.round(weapon.getMagazineSize() / 3.0);
         actionBar = actionBar + getColoredAmmo(wi.getAmmo(), minAmmo, wi.getSpareAmmo());
+        // spacer
+        actionBar = actionBar + StringFormatUtils.fixedLengthString(" ", 16);
+        // money
+        actionBar = actionBar + "§f© " + StringFormatUtils.decimalFormatNumber(ig.getMoney());
+
         return actionBar;
     }
 

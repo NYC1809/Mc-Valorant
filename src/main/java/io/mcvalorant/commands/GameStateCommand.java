@@ -1,6 +1,6 @@
 package io.mcvalorant.commands;
 
-import io.mcvalorant.GameStateHolder;
+import io.mcvalorant.holder.GameStateHolder;
 import io.mcvalorant.MCValorant;
 import io.mcvalorant.enums.GameState;
 import org.bukkit.command.Command;
@@ -40,7 +40,7 @@ public class GameStateCommand implements CommandExecutor {
                         if (gm.getGameState() == null) {
                             player.sendMessage("Active Gamestate is null.");
                         } else {
-                            player.sendMessage("Active Gamestate: " + gm.getGameState().name());
+                            player.sendMessage("Active Gamestate: " + gm.getGameState().getFriendlyName());
                         }
                     }
                     default -> player.sendMessage("Possible arguments: set, get");

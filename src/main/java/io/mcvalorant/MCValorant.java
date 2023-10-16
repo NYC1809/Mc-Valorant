@@ -2,19 +2,24 @@ package io.mcvalorant;
 
 import de.leonheuer.mcguiapi.gui.GUIFactory;
 import io.mcvalorant.commands.DebugCommand;
-import io.mcvalorant.commands.TeamCommand;
 import io.mcvalorant.commands.GameStateCommand;
+import io.mcvalorant.commands.TeamCommand;
+import io.mcvalorant.controller.ScoreboardTeamsController;
 import io.mcvalorant.enums.GameState;
 import io.mcvalorant.enums.GameTeam;
-import io.mcvalorant.gamestates.*;
+import io.mcvalorant.enums.Rounds;
+import io.mcvalorant.gamestates.BuyPhase;
+import io.mcvalorant.gamestates.IngamePhase;
+import io.mcvalorant.gamestates.RoundOverPhase;
+import io.mcvalorant.holder.GameStateHolder;
+import io.mcvalorant.holder.RoundStateHolder;
+import io.mcvalorant.listeners.PlayerBuyLoadout;
 import io.mcvalorant.listeners.PlayerChangeSlots;
 import io.mcvalorant.listeners.PlayerInteract;
 import io.mcvalorant.listeners.PlayerJoin;
-import io.mcvalorant.listeners.PlayerBuyLoadout;
-import io.mcvalorant.controller.ScoreboardTeamsController;
 import io.mcvalorant.models.BlockInfo;
 import io.mcvalorant.models.IngamePlayer;
-import io.mcvalorant.tasks.ActionBarTask;
+import io.mcvalorant.rounds.*;
 import io.mcvalorant.utils.Config;
 import io.mcvalorant.utils.FileUtils;
 import org.bukkit.Bukkit;
@@ -39,6 +44,7 @@ public final class MCValorant extends JavaPlugin {
     private Config configuration;
     private Config langConfig;
     private GameStateHolder gameStateHolder;
+    private RoundStateHolder roundStateHolder;
     private ScoreboardTeamsController scoreboardTeamsController;
     private GUIFactory guiFactory;
 
@@ -61,34 +67,40 @@ public final class MCValorant extends JavaPlugin {
         registerCommand("debugcommand", new DebugCommand(this));
         registerCommand("buy", new PlayerBuyLoadout(this));
 
-        getLogger().info("Preparing game state...");
         blockInfoMap.put(Material.STONE, new BlockInfo(1f));
         blockInfoMap.put(Material.OAK_WOOD, new BlockInfo(.5f));
         blockInfoMap.put(Material.AIR, new BlockInfo(0));
         blockInfoMap.put(Material.BARRIER, new BlockInfo(0));
 
         gameStateHolder = new GameStateHolder();
-        gameStateHolder.registerHandler(GameState.LOBBY_PHASE, new LobbyPhase(this));
-        gameStateHolder.registerHandler(GameState.AGENT_SELECT, new AgentSelect(this));
         gameStateHolder.registerHandler(GameState.BUY_PHASE, new BuyPhase(this));
         gameStateHolder.registerHandler(GameState.INGAME_PHASE, new IngamePhase(this));
         gameStateHolder.registerHandler(GameState.ROUND_OVER, new RoundOverPhase(this));
-        gameStateHolder.registerHandler(GameState.OVERTIME_1, new Overtime1(this));
-        gameStateHolder.registerHandler(GameState.OVERTIME_2, new Overtime2(this));
-        gameStateHolder.registerHandler(GameState.ENDGAME_PHASE, new EndgamePhase(this));
+
+        roundStateHolder = new RoundStateHolder();
+        roundStateHolder.registerHandler(Rounds.LOBBY_ROUND, new LobbyRound(this));
+        roundStateHolder.registerHandler(Rounds.FIRST_PISTOL, new FirstPistolRound(this));
+        roundStateHolder.registerHandler(Rounds.FIRST_HALF, new FirstHalfRound(this));
+        roundStateHolder.registerHandler(Rounds.SECOND_PISTOL, new SecondPistolRound(this));
+        roundStateHolder.registerHandler(Rounds.SECOND_HALF, new SecondHalfRound(this));
+        roundStateHolder.registerHandler(Rounds.LAST_ROUND, new LastRound(this));
+        roundStateHolder.registerHandler(Rounds.FIRST_OVERTIME, new FirstOvertimeRound(this));
+        roundStateHolder.registerHandler(Rounds.SECOND_OVERTIME, new SecondOvertimeRound(this));
+        roundStateHolder.registerHandler(Rounds.MATCH_OVER, new MatchOverRound(this));
+
+        if (!roundStateHolder.setRoundState(Rounds.LOBBY_ROUND)) {
+            getLogger().severe("Lobby round failed to start.");
+        }
 
         scoreboardTeamsController = new ScoreboardTeamsController(this);
         scoreboardTeamsController.clearTeam(GameTeam.TEAM1);
         scoreboardTeamsController.clearTeam(GameTeam.TEAM2);
         scoreboardTeamsController.clearTeam(GameTeam.SPECTATOR);
 
-        if (!gameStateHolder.setGameState(GameState.LOBBY_PHASE)) {
-            getLogger().severe("Lobby phase failed to start.");
-        }
-
         getLogger().info("loaded in " + Duration.between(start, LocalDateTime.now()).toMillis() + "ms");
 
-        getServer().getScheduler().runTaskTimerAsynchronously(this, new ActionBarTask(this), 0, 1);
+        //getServer().getScheduler().runTaskTimerAsynchronously(this, new ActionBarTask(this), 0, 1);
+
     }
 
     private void registerCommand(String command, CommandExecutor executor) {
@@ -133,6 +145,10 @@ public final class MCValorant extends JavaPlugin {
 
     public GameStateHolder getGameStateHolder() {
         return gameStateHolder;
+    }
+
+    public RoundStateHolder getRoundStateHolder() {
+        return roundStateHolder;
     }
 
     public ScoreboardTeamsController getScoreboardTeamsController() {

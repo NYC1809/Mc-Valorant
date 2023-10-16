@@ -1,4 +1,4 @@
-package io.mcvalorant;
+package io.mcvalorant.holder;
 
 import io.mcvalorant.enums.GameState;
 import io.mcvalorant.models.GameStateHandler;
