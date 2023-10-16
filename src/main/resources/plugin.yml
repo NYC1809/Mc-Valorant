@@ -18,3 +18,6 @@ commands:
   buy:
     description: Open the loadout menu
     permission: valorant.player.ingame
+  money:
+    description: Modify the money / credits from player
+    permission: valorant.command.money

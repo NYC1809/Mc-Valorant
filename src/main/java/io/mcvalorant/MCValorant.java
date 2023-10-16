@@ -3,6 +3,7 @@ package io.mcvalorant;
 import de.leonheuer.mcguiapi.gui.GUIFactory;
 import io.mcvalorant.commands.DebugCommand;
 import io.mcvalorant.commands.GameStateCommand;
+import io.mcvalorant.commands.MoneyCommand;
 import io.mcvalorant.commands.TeamCommand;
 import io.mcvalorant.controller.ScoreboardTeamsController;
 import io.mcvalorant.enums.GameState;
@@ -20,6 +21,7 @@ import io.mcvalorant.listeners.PlayerJoin;
 import io.mcvalorant.models.BlockInfo;
 import io.mcvalorant.models.IngamePlayer;
 import io.mcvalorant.rounds.*;
+import io.mcvalorant.tasks.ActionBarTask;
 import io.mcvalorant.utils.Config;
 import io.mcvalorant.utils.FileUtils;
 import org.bukkit.Bukkit;
@@ -66,6 +68,7 @@ public final class MCValorant extends JavaPlugin {
         registerCommand("gamestate", new GameStateCommand(this));
         registerCommand("debugcommand", new DebugCommand(this));
         registerCommand("buy", new PlayerBuyLoadout(this));
+        registerCommand("money", new MoneyCommand(this));
 
         blockInfoMap.put(Material.STONE, new BlockInfo(1f));
         blockInfoMap.put(Material.OAK_WOOD, new BlockInfo(.5f));
@@ -99,7 +102,7 @@ public final class MCValorant extends JavaPlugin {
 
         getLogger().info("loaded in " + Duration.between(start, LocalDateTime.now()).toMillis() + "ms");
 
-        //getServer().getScheduler().runTaskTimerAsynchronously(this, new ActionBarTask(this), 0, 1);
+        getServer().getScheduler().runTaskTimerAsynchronously(this, new ActionBarTask(this), 0, 1);
 
     }
 

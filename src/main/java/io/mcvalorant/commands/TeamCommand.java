@@ -49,19 +49,14 @@ public class TeamCommand implements CommandExecutor, TabCompleter {
                                 case "team_2" -> changeToTeam(GameTeam.TEAM2, main.getServer().getPlayer(args[2]));
                                 case "team_spectator" -> changeToTeam(GameTeam.SPECTATOR, main.getServer().getPlayer(args[2]));
                             }
-
                         } else {
                             player.sendMessage("Please use /team set <team> <player>");
                         }
                     }
                 }
-
-
             } else {
                 player.sendMessage("Gamephase is not in the \"LobbyPhase\"!");
             }
-
-
         }
 
         return false;

@@ -1,11 +1,13 @@
 package io.mcvalorant.listeners;
 
+import io.mcvalorant.enums.Rounds;
 import io.mcvalorant.holder.GameStateHolder;
 import io.mcvalorant.MCValorant;
 import io.mcvalorant.controller.ScoreboardTeamsController;
 import io.mcvalorant.enums.GameTeam;
 import io.mcvalorant.enums.Money;
 import io.mcvalorant.enums.Weapon;
+import io.mcvalorant.holder.RoundStateHolder;
 import io.mcvalorant.models.IngamePlayer;
 import io.mcvalorant.models.WeaponInfo;
 import net.kyori.adventure.text.Component;
@@ -33,34 +35,34 @@ public class PlayerJoin implements Listener {
         Player player = event.getPlayer();
 
         ScoreboardTeamsController tm = main.getScoreboardTeamsController();
-        GameStateHolder gameStateHolder = main.getGameStateHolder();
-
-        if(!tm.getScoreboard().getTeam(GameTeam.TEAM1.name()).getEntries().contains(player.getName()) || !tm.getScoreboard().getTeam(GameTeam.TEAM2.name()).getEntries().contains(player.getName())) {
-            if (tm.getTeamSize(GameTeam.TEAM1) >= 5 && tm.getTeamSize(GameTeam.TEAM2) >= 5) {
-                tm.addToTeam(GameTeam.SPECTATOR, player);
-            } else {
-                Random random = new Random();
-                switch (random.nextInt(2)) {
-                    case 0:
-                        if (tm.getTeamSize(GameTeam.TEAM1) >= 5) {
-                            tm.addToTeam(GameTeam.TEAM2, player);
-                        } else {
-                            tm.addToTeam(GameTeam.TEAM1, player);
-                        }
-                        break;
-                    case 1:
-                        if (tm.getTeamSize(GameTeam.TEAM2) >= 5) {
-                            tm.addToTeam(GameTeam.TEAM1, player);
-                        } else {
-                            tm.addToTeam(GameTeam.TEAM2, player);
-                        }
-                        break;
-                    default:
-                        tm.addToTeam(GameTeam.SPECTATOR, player);
-                        break;
+        RoundStateHolder rsh = main.getRoundStateHolder();
+        if(rsh.getRound() == Rounds.LOBBY_ROUND) {
+            if(!tm.getScoreboard().getTeam(GameTeam.TEAM1.name()).getEntries().contains(player.getName()) || !tm.getScoreboard().getTeam(GameTeam.TEAM2.name()).getEntries().contains(player.getName())) {
+                if (tm.getTeamSize(GameTeam.TEAM1) >= 5 && tm.getTeamSize(GameTeam.TEAM2) >= 5) {
+                    tm.addToTeam(GameTeam.SPECTATOR, player);
+                } else {
+                    Random random = new Random();
+                    switch (random.nextInt(2)) {
+                        case 0:
+                            if (tm.getTeamSize(GameTeam.TEAM1) >= 5) {
+                                tm.addToTeam(GameTeam.TEAM2, player);
+                            } else {
+                                tm.addToTeam(GameTeam.TEAM1, player);
+                            }
+                            break;
+                        case 1:
+                            if (tm.getTeamSize(GameTeam.TEAM2) >= 5) {
+                                tm.addToTeam(GameTeam.TEAM1, player);
+                            } else {
+                                tm.addToTeam(GameTeam.TEAM2, player);
+                            }
+                            break;
+                        default:
+                            tm.addToTeam(GameTeam.SPECTATOR, player);
+                            break;
+                    }
                 }
             }
-
         } else {
             tm.addToTeam(GameTeam.SPECTATOR, player);
         }
